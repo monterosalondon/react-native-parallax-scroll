@@ -1,6 +1,12 @@
 {
   "name": "react-native-parallax-scroll",
   "version": "0.0.1",
+  "description": "Parallax scroll for React Native",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/z4o4z/react-native-parallax-scroll.git"
+  },
+  "license": "MIT",
   "main": "src/index.js",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -27,5 +33,13 @@
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
     "react-native": "0.42.3"
-  }
+  },
+  "keywords": [
+    "react",
+    "react-native",
+    "reactNative",
+    "parallax",
+    "scroll",
+    "scrollView"
+  ]
 }
