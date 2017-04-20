@@ -18,7 +18,7 @@ $ npm install react-native-parallax-scroll --save
 
 ## Demo
 
-| ![](https://github.com/z4o4z/react-native-parallax-scroll/demo/demo-1.gif) | ![](https://github.com/z4o4z/react-native-parallax-scroll/demo/demo-2.gif) | ![](https://github.com/z4o4z/react-native-parallax-scroll/demo/demo-3.gif) |
+| ![](https://github.com/z4o4z/react-native-parallax-scroll/blob/master/demo/demo-1.gif) | ![](https://github.com/z4o4z/react-native-parallax-scroll/blob/master/demo/demo-2.gif) | ![](https://github.com/z4o4z/react-native-parallax-scroll/blob/master/demo/demo-3.gif) |
 
 ## Basic Usage
 
