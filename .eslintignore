@@ -1,0 +1,7 @@
+.vscode/
+node_modules/
+android/
+ios/
+react-native-packager-cache-*
+haste-map-react-native-packager-cache-*
+haste-map-react-native-packager-*
