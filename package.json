@@ -14,7 +14,8 @@
     "adb-revers-7007": "adb reverse tcp:7007 tcp:7007",
     "lint": "eslint -c ./.eslintrc ./src/index.js",
     "format": "prettier-eslint --write ./src/index.js ./storybook/**/*.js",
-    "storybook": "storybook start -p 7007"
+    "storybook-android": "storybook start -p 7007",
+    "storybook-ios": "storybook start -p 7007 -h 10.94.4.147"
   },
   "dependencies": {},
   "devDependencies": {

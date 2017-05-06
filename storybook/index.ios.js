@@ -7,5 +7,5 @@ configure(() => {
   require('./stories');
 }, module);
 
-const StorybookUI = getStorybookUI({ port: 7007, host: 'localhost' });
+const StorybookUI = getStorybookUI({ port: 7007, host: '10.94.4.147' });
 AppRegistry.registerComponent('ParallaxScroll', () => StorybookUI);
