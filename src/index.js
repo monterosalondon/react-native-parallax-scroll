@@ -97,7 +97,7 @@ export default class ParallaxScroll extends PureComponent {
       ...scrollViewProps
     } = this.props;
 
-    const style = [scrollStyle, { height }];
+    const style = [scrollStyle, { width, height }];
     const ScrollableComponent = this.props.scrollableComponent;
 
     return (
@@ -131,6 +131,7 @@ export default class ParallaxScroll extends PureComponent {
           throttle={16}
           onScroll={this._onScroll}
           scrollEventThrottle={16}
+          contentContainerStyle={{ width, minHeight: height }}
         >
           {this._renderContent({ children, parallaxHeight, contentContainerStyle })}
         </ScrollableComponent>
@@ -243,7 +244,7 @@ export default class ParallaxScroll extends PureComponent {
 
   // eslint-disable-next-line class-methods-use-this
   _renderContent({ children, parallaxHeight, contentContainerStyle }) {
-    const style = [{ marginTop: parallaxHeight }, contentContainerStyle];
+    const style = [contentContainerStyle, { marginTop: parallaxHeight }];
 
     return (
       <View style={style}>
