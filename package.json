@@ -1,10 +1,10 @@
 {
-  "name": "react-native-parallax-scroll",
+  "name": "@monterosa/react-native-parallax-scroll",
   "version": "1.0.3",
   "description": "Parallax scroll for React Native",
   "repository": {
     "type": "git",
-    "url": "https://github.com/z4o4z/react-native-parallax-scroll.git"
+    "url": "https://github.com/monterosalondon/react-native-parallax-scroll.git"
   },
   "license": "MIT",
   "main": "src/index.js",
@@ -16,6 +16,11 @@
     "format": "prettier-eslint --write ./src/index.js ./storybook/**/*.js",
     "storybook-android": "storybook start -p 7007",
     "storybook-ios": "storybook start -p 7007 -h 10.94.4.147"
+  },
+  "author": {
+    "name": "Monterosa Productions Ltd",
+    "email": "hello@monterosa.co",
+    "url": "http://monterosa.co/"
   },
   "dependencies": {},
   "devDependencies": {
