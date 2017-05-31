@@ -13,7 +13,7 @@ A `ScrollView`-like component that:
 ## Installation
 
 ```
-$ npm install react-native-parallax-scroll --save
+$ npm install @monterosa/react-native-parallax-scroll --save
 ```
 
 ## Demo
@@ -23,7 +23,7 @@ $ npm install react-native-parallax-scroll --save
 ## Basic Usage
 
 ```js
-import ParallaxScroll from 'react-native-parallax-scroll';
+import ParallaxScroll from '@monterosa/react-native-parallax-scroll';
 
 // Inside of a component's render() method:
 render() {
