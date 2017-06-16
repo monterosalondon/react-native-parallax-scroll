@@ -67,7 +67,7 @@ The `ParallaxScroll` component adds a few additional properties, as described be
 | `parallaxHeight` | `number` | `Dimensions.get('window').width * 9 / 16` | This is the height of parallax. |
 | `scrollableComponent` | `class` | `ScrollView` | This is a class of scrollable component. |
 | `isBackgroundScalable` | `bool` | `true` | Is background scalable on iOS? |
-| `headerBackgroundColor` | `string` | `rgba(0, 0, 0, 0)` | The color of the unsticked(unfixed) header background. |
+| `headerBackgroundColor` | `string` | `rgba(0, 0, 0, 0)` | The color of the unsticked(unfixed) header background. Can be empty `''` string.|
 | `contentContainerStyle` | `object` | `{}` | These styles will be applied to the scroll view content container which wraps all of the child views. |
 | `onChangeHeaderVisibility` | `func` | `null` | A callback function that is invoked when the parallax header is hidden or shown (as the user is scrolling). Function is called with a `boolean` value to indicate whether header is visible or not. |
 | `renderParallaxBackground` | `func` | `() => <View />` | This renders the background of the parallax. |

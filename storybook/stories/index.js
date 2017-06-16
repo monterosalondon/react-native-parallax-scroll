@@ -16,7 +16,7 @@ const bacground = (
 
 storiesOf('ParallaxScroll', module)
   .addDecorator(withKnobs)
-  .add('with bacground', () => (
+  .add('with bacground', () =>
     <ParallaxScroll
       parallaxHeight={number('Parallax height', 250)}
       isBackgroundScalable={boolean('Is background scalable', true)}
@@ -26,8 +26,8 @@ storiesOf('ParallaxScroll', module)
     >
       <Welcome repeat={number('Repeat text times', 5)} />
     </ParallaxScroll>
-  ))
-  .add('with header', () => (
+  )
+  .add('with header', () =>
     <ParallaxScroll
       renderHeader={() => <Header />}
       headerHeight={number('Header height', 50)}
@@ -43,8 +43,24 @@ storiesOf('ParallaxScroll', module)
     >
       <Welcome repeat={number('Repeat text times', 5)} />
     </ParallaxScroll>
-  ))
-  .add('with foreground', () => (
+  )
+  .add('without header background', () =>
+    <ParallaxScroll
+      renderHeader={() => <Header />}
+      headerHeight={number('Header height', 50)}
+      isHeaderFixed={boolean('Is header fixed', false)}
+      parallaxHeight={number('Parallax height', 250)}
+      isBackgroundScalable={boolean('Is background scalable', true)}
+      headerBackgroundColor={text('Header bacground color', '')}
+      onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
+      renderParallaxBackground={() => bacground}
+      fadeOutParallaxBackground={boolean('Fade out background', true)}
+      parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
+    >
+      <Welcome repeat={number('Repeat text times', 5)} />
+    </ParallaxScroll>
+  )
+  .add('with foreground', () =>
     <ParallaxScroll
       renderHeader={() => <Header />}
       headerHeight={number('Header height', 50)}
@@ -63,4 +79,4 @@ storiesOf('ParallaxScroll', module)
     >
       <Welcome repeat={number('Repeat text times', 5)} />
     </ParallaxScroll>
-  ));
+  );
