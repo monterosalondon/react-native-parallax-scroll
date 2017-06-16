@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { AppRegistry } from 'react-native';
-import { getStorybookUI, configure } from '@kadira/react-native-storybook';
+import { getStorybookUI, configure } from '@storybook/react-native';
 
 // import stories
 configure(() => {

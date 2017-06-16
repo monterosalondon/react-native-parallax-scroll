@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
-import { storiesOf, action } from '@kadira/react-native-storybook';
-import { withKnobs, text, boolean, number } from '@kadira/storybook-addon-knobs';
+import { storiesOf, action } from '@storybook/react-native';
+import { withKnobs, text, boolean, number } from '@storybook/addon-knobs';
 
 import ParallaxScroll from '../../src';
 

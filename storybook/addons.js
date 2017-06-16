@@ -1,3 +1,3 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import '@kadira/react-native-storybook/addons';
-import '@kadira/storybook-addon-knobs/register';
+import '@storybook/react-native/addons';
+import '@storybook/addon-knobs/register';
