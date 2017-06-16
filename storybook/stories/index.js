@@ -17,7 +17,7 @@ const bacground = (
 storiesOf('ParallaxScroll', module)
   .addDecorator(withKnobs)
   .add('with bacground', () =>
-    <ParallaxScroll
+    (<ParallaxScroll
       parallaxHeight={number('Parallax height', 250)}
       isBackgroundScalable={boolean('Is background scalable', true)}
       renderParallaxBackground={() => bacground}
@@ -25,10 +25,10 @@ storiesOf('ParallaxScroll', module)
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
     >
       <Welcome repeat={number('Repeat text times', 5)} />
-    </ParallaxScroll>
+    </ParallaxScroll>),
   )
   .add('with header', () =>
-    <ParallaxScroll
+    (<ParallaxScroll
       renderHeader={() => <Header />}
       headerHeight={number('Header height', 50)}
       isHeaderFixed={boolean('Is header fixed', false)}
@@ -42,10 +42,10 @@ storiesOf('ParallaxScroll', module)
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
     >
       <Welcome repeat={number('Repeat text times', 5)} />
-    </ParallaxScroll>
+    </ParallaxScroll>),
   )
   .add('without header background', () =>
-    <ParallaxScroll
+    (<ParallaxScroll
       renderHeader={() => <Header />}
       headerHeight={number('Header height', 50)}
       isHeaderFixed={boolean('Is header fixed', false)}
@@ -58,10 +58,10 @@ storiesOf('ParallaxScroll', module)
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
     >
       <Welcome repeat={number('Repeat text times', 5)} />
-    </ParallaxScroll>
+    </ParallaxScroll>),
   )
   .add('with foreground', () =>
-    <ParallaxScroll
+    (<ParallaxScroll
       renderHeader={() => <Header />}
       headerHeight={number('Header height', 50)}
       isHeaderFixed={boolean('Is header fixed', false)}
@@ -78,5 +78,26 @@ storiesOf('ParallaxScroll', module)
       parallaxForegroundScrollSpeed={number('Foreground scroll speed', 2.5)}
     >
       <Welcome repeat={number('Repeat text times', 5)} />
-    </ParallaxScroll>
+    </ParallaxScroll>),
+  )
+  .add('with native driver', () =>
+    (<ParallaxScroll
+      renderHeader={() => <Header />}
+      headerHeight={number('Header height', 50)}
+      isHeaderFixed={boolean('Is header fixed', false)}
+      parallaxHeight={number('Parallax height', 250)}
+      useNativeDriver
+      isBackgroundScalable={boolean('Is background scalable', true)}
+      headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 0)')}
+      onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
+      renderParallaxBackground={() => bacground}
+      fadeOutParallaxBackground={boolean('Fade out background', false)}
+      renderParallaxForeground={() => <Foreground />}
+      fadeOutParallaxForeground={boolean('Fade out foreground', true)}
+      headerFixedBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 1)')}
+      parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
+      parallaxForegroundScrollSpeed={number('Foreground scroll speed', 2.5)}
+    >
+      <Welcome repeat={number('Repeat text times', 5)} />
+    </ParallaxScroll>),
   );

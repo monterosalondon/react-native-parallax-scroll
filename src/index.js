@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React, { PureComponent } from 'react';
-import { View, Animated, ScrollView, Dimensions } from 'react-native';
+import { View, Animated, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 /* eslint-enable import/no-extraneous-dependencies */
 
@@ -22,13 +22,14 @@ export default class ParallaxScroll extends PureComponent {
     renderHeader: PropTypes.func,
     isHeaderFixed: PropTypes.bool,
     parallaxHeight: PropTypes.number,
+    useNativeDriver: PropTypes.bool,
     scrollableComponent: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
     isBackgroundScalable: PropTypes.bool,
     headerBackgroundColor: PropTypes.string,
     contentContainerStyle: PropTypes.oneOfType([
       PropTypes.array,
       PropTypes.number,
-      PropTypes.object
+      PropTypes.object,
     ]),
     onChangeHeaderVisibility: PropTypes.func,
     renderParallaxBackground: PropTypes.func,
@@ -37,7 +38,7 @@ export default class ParallaxScroll extends PureComponent {
     fadeOutParallaxBackground: PropTypes.bool,
     headerFixedBackgroundColor: PropTypes.string,
     parallaxBackgroundScrollSpeed: PropTypes.number,
-    parallaxForegroundScrollSpeed: PropTypes.number
+    parallaxForegroundScrollSpeed: PropTypes.number,
   };
 
   static defaultProps = {
@@ -51,7 +52,8 @@ export default class ParallaxScroll extends PureComponent {
     renderHeader: null,
     isHeaderFixed: false,
     parallaxHeight: window.width * RATIO,
-    scrollableComponent: ScrollView,
+    useNativeDriver: false,
+    scrollableComponent: Animated.ScrollView,
     isBackgroundScalable: true,
     headerBackgroundColor: 'rgba(0, 0, 0, 0)',
     contentContainerStyle: {},
@@ -62,18 +64,31 @@ export default class ParallaxScroll extends PureComponent {
     fadeOutParallaxBackground: false,
     headerFixedBackgroundColor: 'rgba(0, 0, 0, 1)',
     parallaxBackgroundScrollSpeed: 5,
-    parallaxForegroundScrollSpeed: 5
+    parallaxForegroundScrollSpeed: 5,
   };
 
   scrollY = new Animated.Value(0);
-  isHeaderVisibible = false;
+  isHeaderVisibible = true;
 
   constructor(props) {
     super(props);
 
-    this.changeScrollYOnScroll = Animated.event([
-      { nativeEvent: { contentOffset: { y: this.scrollY } } }
-    ]);
+    if (props.useNativeDriver) {
+      this._onAnimatedScrollWithND = Animated.event(
+        [{ nativeEvent: { contentOffset: { y: this.scrollY } } }],
+        {
+          listener: this._onScroll,
+          useNativeDriver: true,
+        },
+      );
+    } else {
+      this._onAnimatedScroll = Animated.event(
+        [{ nativeEvent: { contentOffset: { y: this.scrollY } } }],
+        {
+          listener: this._onScroll,
+        },
+      );
+    }
   }
 
   render() {
@@ -115,7 +130,7 @@ export default class ParallaxScroll extends PureComponent {
             isBackgroundScalable,
             renderParallaxBackground,
             fadeOutParallaxBackground,
-            parallaxBackgroundScrollSpeed
+            parallaxBackgroundScrollSpeed,
           })}
 
         {renderParallaxForeground &&
@@ -126,7 +141,7 @@ export default class ParallaxScroll extends PureComponent {
             parallaxHeight,
             renderParallaxForeground,
             fadeOutParallaxForeground,
-            parallaxForegroundScrollSpeed
+            parallaxForegroundScrollSpeed,
           })}
 
         {this._renderHeader({
@@ -136,14 +151,16 @@ export default class ParallaxScroll extends PureComponent {
           isHeaderFixed,
           parallaxHeight,
           headerBackgroundColor,
-          headerFixedBackgroundColor
+          headerFixedBackgroundColor,
         })}
 
         <ScrollableComponent
           {...scrollViewProps}
           style={style}
           throttle={16}
-          onScroll={this._onScroll}
+          onScroll={
+            this.props.useNativeDriver ? this._onAnimatedScrollWithND : this._onAnimatedScroll
+          }
           scrollEventThrottle={16}
           contentContainerStyle={{ width, minHeight: height }}
         >
@@ -161,35 +178,35 @@ export default class ParallaxScroll extends PureComponent {
     isBackgroundScalable,
     renderParallaxBackground,
     fadeOutParallaxBackground,
-    parallaxBackgroundScrollSpeed
+    parallaxBackgroundScrollSpeed,
   }) {
     const bHeight = withHeader ? height - headerHeight : height;
 
     const translateY = !bHeight
       ? 0
       : this.scrollY.interpolate({
-          inputRange: [0, bHeight],
-          outputRange: [0, -(bHeight / parallaxBackgroundScrollSpeed)],
-          extrapolateRight: 'extend',
-          extrapolateLeft: 'clamp'
-        });
+        inputRange: [0, bHeight],
+        outputRange: [0, -(bHeight / parallaxBackgroundScrollSpeed)],
+        extrapolateRight: 'extend',
+        extrapolateLeft: 'clamp',
+      });
 
     const scale = !isBackgroundScalable || !bHeight
       ? 1
       : this.scrollY.interpolate({
-          inputRange: [-bHeight, 0],
-          outputRange: [3, 1],
-          extrapolateLeft: 'extend',
-          extrapolateRight: 'clamp'
-        });
+        inputRange: [-bHeight, 0],
+        outputRange: [3, 1],
+        extrapolateLeft: 'extend',
+        extrapolateRight: 'clamp',
+      });
 
     const opacity = !fadeOutParallaxBackground || !bHeight
       ? 1
       : this.scrollY.interpolate({
-          inputRange: [0, bHeight],
-          outputRange: [1, 0],
-          extrapolate: 'clamp'
-        });
+        inputRange: [0, bHeight],
+        outputRange: [1, 0],
+        extrapolate: 'clamp',
+      });
 
     return (
       <Animated.View
@@ -198,7 +215,7 @@ export default class ParallaxScroll extends PureComponent {
           width,
           height,
           opacity,
-          transform: [{ translateY }, { scale }]
+          transform: [{ translateY }, { scale }],
         }}
       >
         {renderParallaxBackground()}
@@ -213,25 +230,25 @@ export default class ParallaxScroll extends PureComponent {
     parallaxHeight: height,
     renderParallaxForeground,
     fadeOutParallaxForeground,
-    parallaxForegroundScrollSpeed
+    parallaxForegroundScrollSpeed,
   }) {
     const bHeight = withHeader ? height - headerHeight : height;
 
     const translateY = !bHeight
       ? 1
       : this.scrollY.interpolate({
-          inputRange: [0, bHeight],
-          outputRange: [0, -(bHeight / parallaxForegroundScrollSpeed)],
-          extrapolate: 'clamp'
-        });
+        inputRange: [0, bHeight],
+        outputRange: [0, -(bHeight / parallaxForegroundScrollSpeed)],
+        extrapolate: 'clamp',
+      });
 
     const opacity = !fadeOutParallaxForeground || !bHeight
       ? 1
       : this.scrollY.interpolate({
-          inputRange: [0, bHeight],
-          outputRange: [1, 0],
-          extrapolate: 'clamp'
-        });
+        inputRange: [0, bHeight],
+        outputRange: [1, 0],
+        extrapolate: 'clamp',
+      });
 
     return (
       <Animated.View
@@ -240,7 +257,7 @@ export default class ParallaxScroll extends PureComponent {
           width,
           height: bHeight,
           opacity,
-          transform: [{ translateY }]
+          transform: [{ translateY }],
         }}
       >
         {renderParallaxForeground()}
@@ -266,7 +283,7 @@ export default class ParallaxScroll extends PureComponent {
     isHeaderFixed,
     parallaxHeight,
     headerBackgroundColor,
-    headerFixedBackgroundColor
+    headerFixedBackgroundColor,
   }) {
     if (!renderHeader) {
       return null;
@@ -274,24 +291,24 @@ export default class ParallaxScroll extends PureComponent {
     const translateY = isHeaderFixed
       ? 0
       : this.scrollY.interpolate({
-          inputRange: [parallaxHeight - height, parallaxHeight],
-          outputRange: [0, -height],
-          extrapolate: 'clamp'
-        });
+        inputRange: [parallaxHeight - height, parallaxHeight],
+        outputRange: [0, -height],
+        extrapolate: 'clamp',
+      });
 
     const style = {
       flex: 1,
       position: 'absolute',
       width,
       height,
-      transform: [{ translateY }]
+      transform: [{ translateY }],
     };
 
-    if (headerBackgroundColor) {
+    if (!this.props.useNativeDriver && headerBackgroundColor) {
       style.backgroundColor = this.scrollY.interpolate({
         inputRange: [0, parallaxHeight - height],
         outputRange: [headerBackgroundColor, headerFixedBackgroundColor],
-        extrapolate: 'clamp'
+        extrapolate: 'clamp',
       });
     }
 
@@ -302,11 +319,9 @@ export default class ParallaxScroll extends PureComponent {
     );
   }
 
-  _onScroll = e => {
-    const { onScroll, headerHeight, parallaxHeight, onChangeHeaderVisibility } = this.props;
-    const isHeaderVisibible = e.nativeEvent.contentOffset.y >= parallaxHeight - headerHeight;
-
-    this.changeScrollYOnScroll(e);
+  _onScroll = (e) => {
+    const { onScroll, parallaxHeight, onChangeHeaderVisibility } = this.props;
+    const isHeaderVisibible = e.nativeEvent.contentOffset.y < parallaxHeight;
 
     if (onScroll) {
       onScroll(e);
