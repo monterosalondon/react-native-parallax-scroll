@@ -66,8 +66,11 @@ The `ParallaxScroll` component adds a few additional properties, as described be
 | `isHeaderFixed` | `bool` | `false` | Is header fixed to top(not sticky)? |
 | `parallaxHeight` | `number` | `Dimensions.get('window').width * 9 / 16` | This is the height of parallax. |
 | `useNativeDriver` | `bool` | `false` | Enable [Native driver](https://facebook.github.io/react-native/blog/2017/02/14/using-native-driver-for-animated.html) for animated. NOTE: Works only with `Animated.ScrollView` component. |
+| `isHeaderTouchable` | `bool` | `false` | Should ParallaxScroll pass touches to your header component? |
 | `scrollableComponent` | `class` | `Animated.ScrollView` | This is a class of scrollable component. |
 | `isBackgroundScalable` | `bool` | `true` | Is background scalable on iOS? |
+| `isBackgroundTouchable` | `bool` | `false` | Should the ParallaxScroll pass touches to your background component? |
+| `isForegroundTouchable` | `bool` | `false` | Should the ParallaxScroll pass touches to your foreground component? |
 | `headerBackgroundColor` | `string` | `rgba(0, 0, 0, 0)` | The color of the unsticked(unfixed) header background. Can be empty `''` string. NOTE: Dosen't work with useNativeDriver.|
 | `contentContainerStyle` | `object` | `{}` | These styles will be applied to the scroll view content container which wraps all of the child views. |
 | `onChangeHeaderVisibility` | `func` | `null` | A callback function that is invoked when the parallax header is hidden or shown (as the user is scrolling). Function is called with a `boolean` value to indicate whether header is visible or not. |

@@ -23,8 +23,11 @@ export default class ParallaxScroll extends PureComponent {
     isHeaderFixed: PropTypes.bool,
     parallaxHeight: PropTypes.number,
     useNativeDriver: PropTypes.bool,
+    isHeaderTouchable: PropTypes.bool,
     scrollableComponent: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
     isBackgroundScalable: PropTypes.bool,
+    isBackgroundTouchable: PropTypes.bool,
+    isForegroundTouchable: PropTypes.bool,
     headerBackgroundColor: PropTypes.string,
     contentContainerStyle: PropTypes.oneOfType([
       PropTypes.array,
@@ -53,8 +56,11 @@ export default class ParallaxScroll extends PureComponent {
     isHeaderFixed: false,
     parallaxHeight: window.width * RATIO,
     useNativeDriver: false,
+    isHeaderTouchable: false,
     scrollableComponent: Animated.ScrollView,
     isBackgroundScalable: true,
+    isBackgroundTouchable: false,
+    isForegroundTouchable: false,
     headerBackgroundColor: 'rgba(0, 0, 0, 0)',
     contentContainerStyle: {},
     onChangeHeaderVisibility: () => {},
@@ -102,7 +108,10 @@ export default class ParallaxScroll extends PureComponent {
       renderHeader,
       isHeaderFixed,
       parallaxHeight,
+      isHeaderTouchable,
       isBackgroundScalable,
+      isBackgroundTouchable,
+      isForegroundTouchable,
       contentContainerStyle,
       headerBackgroundColor,
       onChangeHeaderVisibility,
@@ -128,6 +137,7 @@ export default class ParallaxScroll extends PureComponent {
             headerHeight,
             parallaxHeight,
             isBackgroundScalable,
+            isBackgroundTouchable,
             renderParallaxBackground,
             fadeOutParallaxBackground,
             parallaxBackgroundScrollSpeed,
@@ -139,6 +149,7 @@ export default class ParallaxScroll extends PureComponent {
             withHeader: !!renderHeader,
             headerHeight,
             parallaxHeight,
+            isForegroundTouchable,
             renderParallaxForeground,
             fadeOutParallaxForeground,
             parallaxForegroundScrollSpeed,
@@ -150,6 +161,7 @@ export default class ParallaxScroll extends PureComponent {
           renderHeader,
           isHeaderFixed,
           parallaxHeight,
+          isHeaderTouchable,
           headerBackgroundColor,
           headerFixedBackgroundColor,
         })}
@@ -176,6 +188,7 @@ export default class ParallaxScroll extends PureComponent {
     headerHeight,
     parallaxHeight: height,
     isBackgroundScalable,
+    isBackgroundTouchable,
     renderParallaxBackground,
     fadeOutParallaxBackground,
     parallaxBackgroundScrollSpeed,
@@ -215,8 +228,10 @@ export default class ParallaxScroll extends PureComponent {
           width,
           height,
           opacity,
+          zIndex: isBackgroundTouchable ? 1 : 0,
           transform: [{ translateY }, { scale }],
         }}
+        pointerEvents="box-none"
       >
         {renderParallaxBackground()}
       </Animated.View>
@@ -228,6 +243,7 @@ export default class ParallaxScroll extends PureComponent {
     withHeader,
     headerHeight,
     parallaxHeight: height,
+    isForegroundTouchable,
     renderParallaxForeground,
     fadeOutParallaxForeground,
     parallaxForegroundScrollSpeed,
@@ -255,10 +271,12 @@ export default class ParallaxScroll extends PureComponent {
         style={{
           position: 'absolute',
           width,
+          zIndex: isForegroundTouchable ? 1 : 0,
           height: bHeight,
           opacity,
           transform: [{ translateY }],
         }}
+        pointerEvents="box-none"
       >
         {renderParallaxForeground()}
       </Animated.View>
@@ -282,12 +300,14 @@ export default class ParallaxScroll extends PureComponent {
     renderHeader,
     isHeaderFixed,
     parallaxHeight,
+    isHeaderTouchable,
     headerBackgroundColor,
     headerFixedBackgroundColor,
   }) {
     if (!renderHeader) {
       return null;
     }
+
     const translateY = isHeaderFixed
       ? 0
       : this.scrollY.interpolate({
@@ -301,6 +321,7 @@ export default class ParallaxScroll extends PureComponent {
       position: 'absolute',
       width,
       height,
+      zIndex: isHeaderTouchable ? 1 : 0,
       transform: [{ translateY }],
     };
 
@@ -313,7 +334,7 @@ export default class ParallaxScroll extends PureComponent {
     }
 
     return (
-      <Animated.View style={style}>
+      <Animated.View style={style} pointerEvents="box-none">
         {renderHeader()}
       </Animated.View>
     );
