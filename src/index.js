@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React, { PureComponent } from 'react';
-import { View, Animated, Dimensions } from 'react-native';
+import { View, Animated, Dimensions, ListViewDataSource } from 'react-native';
 import PropTypes from 'prop-types';
 /* eslint-enable import/no-extraneous-dependencies */
 
@@ -8,15 +8,21 @@ const window = Dimensions.get('window');
 
 const renderEmptyView = () => <View />;
 
+const KEY = 'KEY';
 const RATIO = 9 / 16;
 
 export default class ParallaxScroll extends PureComponent {
   static propTypes = {
+    data: PropTypes.oneOfType([PropTypes.array]),
     style: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
     width: PropTypes.number,
     height: PropTypes.number,
+    sections: PropTypes.oneOfType([PropTypes.array]),
     onScroll: PropTypes.func,
     children: PropTypes.oneOfType([PropTypes.array, PropTypes.element]),
+    renderRow: PropTypes.func,
+    renderItem: PropTypes.func,
+    dataSource: PropTypes.instanceOf(ListViewDataSource),
     scrollStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
     headerHeight: PropTypes.number,
     renderHeader: PropTypes.func,
@@ -45,11 +51,16 @@ export default class ParallaxScroll extends PureComponent {
   };
 
   static defaultProps = {
+    data: null,
     style: {},
     width: window.width,
     height: window.height,
+    sections: null,
     children: null,
     onScroll: null,
+    renderRow: null,
+    dataSource: null,
+    renderItem: null,
     scrollStyle: {},
     headerHeight: 45,
     renderHeader: null,
@@ -99,100 +110,78 @@ export default class ParallaxScroll extends PureComponent {
 
   render() {
     const {
+      data,
       style: wrapperStyle,
       width,
       height,
+      sections,
       children,
+      renderRow,
+      renderItem,
+      dataSource,
       scrollStyle,
-      headerHeight,
       renderHeader,
-      isHeaderFixed,
-      parallaxHeight,
-      isHeaderTouchable,
-      isBackgroundScalable,
-      isBackgroundTouchable,
-      isForegroundTouchable,
+      useNativeDriver,
       contentContainerStyle,
-      headerBackgroundColor,
-      onChangeHeaderVisibility,
       renderParallaxBackground,
       renderParallaxForeground,
-      fadeOutParallaxForeground,
-      fadeOutParallaxBackground,
-      headerFixedBackgroundColor,
-      parallaxForegroundScrollSpeed,
-      parallaxBackgroundScrollSpeed,
       ...scrollViewProps
     } = this.props;
 
     const style = [scrollStyle, { width, height }];
-    const ScrollableComponent = this.props.scrollableComponent;
+    let ScrollableComponent = this.props.scrollableComponent;
+
+    if (useNativeDriver && !Animated.ScrollView.isPrototypeOf(ScrollableComponent)) {
+      ScrollableComponent = Animated.createAnimatedComponent(ScrollableComponent);
+    }
 
     return (
       <View style={[wrapperStyle, { width, height }]} onLayout={this._onLayout}>
-        {renderParallaxBackground &&
-          this._renderParallaxBackground({
-            width,
-            withHeader: !!renderHeader,
-            headerHeight,
-            parallaxHeight,
-            isBackgroundScalable,
-            isBackgroundTouchable,
-            renderParallaxBackground,
-            fadeOutParallaxBackground,
-            parallaxBackgroundScrollSpeed,
-          })}
+        {renderParallaxBackground && this._renderParallaxBackground(!!renderHeader)}
 
-        {renderParallaxForeground &&
-          this._renderParallaxForeground({
-            width,
-            withHeader: !!renderHeader,
-            headerHeight,
-            parallaxHeight,
-            isForegroundTouchable,
-            renderParallaxForeground,
-            fadeOutParallaxForeground,
-            parallaxForegroundScrollSpeed,
-          })}
+        {renderParallaxForeground && this._renderParallaxForeground(!!renderHeader)}
 
-        {this._renderHeader({
-          width,
-          headerHeight,
-          renderHeader,
-          isHeaderFixed,
-          parallaxHeight,
-          isHeaderTouchable,
-          headerBackgroundColor,
-          headerFixedBackgroundColor,
-        })}
+        {
+          <ScrollableComponent
+            {...scrollViewProps}
+            style={style}
+            throttle={16}
+            onScroll={
+              this.props.useNativeDriver ? this._onAnimatedScrollWithND : this._onAnimatedScroll
+            }
+            data={data && renderItem && this._getListData(data)}
+            sections={sections && this._getSectionData(sections)}
+            renderRow={dataSource && renderRow && this._renderRow}
+            renderItem={renderItem && this._renderItem}
+            dataSource={dataSource && renderRow && this._getDataSource(dataSource)}
+            scrollEventThrottle={16}
+            stickyHeaderIndices={[renderHeader ? 0 : -1]}
+            contentContainerStyle={[contentContainerStyle, { width, minHeight: height }]}
+          >
+            {renderHeader && this._renderHeader()}
 
-        <ScrollableComponent
-          {...scrollViewProps}
-          style={style}
-          throttle={16}
-          onScroll={
-            this.props.useNativeDriver ? this._onAnimatedScrollWithND : this._onAnimatedScroll
-          }
-          scrollEventThrottle={16}
-          contentContainerStyle={{ width, minHeight: height }}
-        >
-          {this._renderContent({ children, parallaxHeight, contentContainerStyle })}
-        </ScrollableComponent>
+            {this._renderEmptyView()}
+
+            {children}
+          </ScrollableComponent>
+        }
+
+        {(dataSource || (data && renderItem) || sections) && renderHeader && this._renderHeader()}
       </View>
     );
   }
 
-  _renderParallaxBackground({
-    width,
-    withHeader,
-    headerHeight,
-    parallaxHeight: height,
-    isBackgroundScalable,
-    isBackgroundTouchable,
-    renderParallaxBackground,
-    fadeOutParallaxBackground,
-    parallaxBackgroundScrollSpeed,
-  }) {
+  _renderParallaxBackground(withHeader) {
+    const {
+      width,
+      headerHeight,
+      parallaxHeight: height,
+      isBackgroundScalable,
+      isBackgroundTouchable,
+      renderParallaxBackground,
+      fadeOutParallaxBackground,
+      parallaxBackgroundScrollSpeed,
+    } = this.props;
     const bHeight = withHeader ? height - headerHeight : height;
 
     const translateY = !bHeight
@@ -238,16 +227,17 @@ export default class ParallaxScroll extends PureComponent {
     );
   }
 
-  _renderParallaxForeground({
-    width,
-    withHeader,
-    headerHeight,
-    parallaxHeight: height,
-    isForegroundTouchable,
-    renderParallaxForeground,
-    fadeOutParallaxForeground,
-    parallaxForegroundScrollSpeed,
-  }) {
+  _renderParallaxForeground(withHeader) {
+    const {
+      width,
+      headerHeight,
+      parallaxHeight: height,
+      isForegroundTouchable,
+      renderParallaxForeground,
+      fadeOutParallaxForeground,
+      parallaxForegroundScrollSpeed,
+    } = this.props;
+
     const bHeight = withHeader ? height - headerHeight : height;
 
     const translateY = !bHeight
@@ -283,47 +273,43 @@ export default class ParallaxScroll extends PureComponent {
     );
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  _renderContent({ children, parallaxHeight, contentContainerStyle }) {
-    const style = [contentContainerStyle, { marginTop: parallaxHeight }];
+  _renderHeader() {
+    const {
+      width,
+      headerHeight: height,
+      renderHeader,
+      isHeaderFixed,
+      parallaxHeight,
+      isHeaderTouchable,
+      headerBackgroundColor,
+      headerFixedBackgroundColor,
+    } = this.props;
 
-    return (
-      <View style={style}>
-        {children}
-      </View>
-    );
-  }
-
-  _renderHeader({
-    width,
-    headerHeight: height,
-    renderHeader,
-    isHeaderFixed,
-    parallaxHeight,
-    isHeaderTouchable,
-    headerBackgroundColor,
-    headerFixedBackgroundColor,
-  }) {
-    if (!renderHeader) {
-      return null;
-    }
-
-    const translateY = isHeaderFixed
-      ? 0
-      : this.scrollY.interpolate({
-        inputRange: [parallaxHeight - height, parallaxHeight],
-        outputRange: [0, -height],
-        extrapolate: 'clamp',
-      });
-
-    const style = {
+    const wrapperStyle = {
       flex: 1,
       position: 'absolute',
+      top: 0,
       width,
       height,
       zIndex: isHeaderTouchable ? 1 : 0,
-      transform: [{ translateY }],
     };
+    const style = {
+      flex: 1,
+      width,
+      height,
+    };
+
+    if (!isHeaderFixed) {
+      style.transform = [
+        {
+          translateY: this.scrollY.interpolate({
+            inputRange: [parallaxHeight - height, parallaxHeight],
+            outputRange: [0, -height],
+            extrapolate: 'clamp',
+          }),
+        },
+      ];
+    }
 
     if (!this.props.useNativeDriver && headerBackgroundColor) {
       style.backgroundColor = this.scrollY.interpolate({
@@ -331,14 +317,57 @@ export default class ParallaxScroll extends PureComponent {
         outputRange: [headerBackgroundColor, headerFixedBackgroundColor],
         extrapolate: 'clamp',
       });
+    } else if (this.props.useNativeDriver && headerBackgroundColor) {
+      style.backgroundColor = headerBackgroundColor;
     }
 
     return (
-      <Animated.View style={style} pointerEvents="box-none">
-        {renderHeader()}
-      </Animated.View>
+      <View style={wrapperStyle} pointerEvents="box-none">
+        <Animated.View style={style} pointerEvents="box-none">
+          {renderHeader()}
+        </Animated.View>
+      </View>
     );
   }
+
+  // eslint-disable-next-line
+  _getListData(data) {
+    return [{ key: KEY }, ...data];
+  }
+
+  // eslint-disable-next-line
+  _getDataSource(dataSource) {
+    return dataSource.cloneWithRowsAndSections({
+      [KEY]: [''],
+      ...dataSource._dataBlob,
+    });
+  }
+
+  _getSectionData(sections) {
+    if (this.props.renderItem) {
+      return [{ data: [{ key: KEY }], key: KEY }, ...sections];
+    }
+
+    return [{ data: [{ key: KEY }], key: KEY, renderItem: this._renderEmptyView }, ...sections];
+  }
+
+  _renderRow = (rowData, sectionID, rowID, highlightRow) => {
+    if (sectionID === KEY) {
+      return this._renderEmptyView();
+    }
+
+    return this.props.renderRow(rowData, sectionID, rowID, highlightRow);
+  };
+
+  _renderItem = (e) => {
+    if (e.item.key === KEY) {
+      return this._renderEmptyView();
+    }
+
+    return this.props.renderItem(e);
+  };
+
+  _renderEmptyView = () => <View style={{ height: this.props.parallaxHeight }} />;
 
   _onScroll = (e) => {
     const { onScroll, parallaxHeight, onChangeHeaderVisibility } = this.props;

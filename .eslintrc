@@ -5,6 +5,7 @@
   ],
   "rules": {
     "no-underscore-dangle": 0,
+    "no-prototype-builtins": 0,
     "global-require": 0,
     "react/sort-comp": 0,
     "react/no-array-index-key": 0,

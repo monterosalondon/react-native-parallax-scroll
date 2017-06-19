@@ -36,12 +36,12 @@ export default class Welcome extends Component {
   render() {
     return (
       <View style={this.styles.wrapper}>
-        {Array.from({ length: this.props.repeat }).map((v, i) => (
-          <View key={i}>
+        {Array.from({ length: this.props.repeat }).map((v, i) =>
+          (<View key={i}>
             <Text style={this.styles.content}>{p1}</Text>
             <Text style={this.styles.content}>{p2}</Text>
-          </View>
-        ))}
+          </View>),
+        )}
       </View>
     );
   }
