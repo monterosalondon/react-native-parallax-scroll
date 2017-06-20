@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 
 const header = 'It is Foreground Component';
 
@@ -21,7 +21,9 @@ export default class Header extends Component {
   render() {
     return (
       <View style={this.styles.wrapper}>
-        <Text style={this.styles.header}>{header}</Text>
+        <TouchableOpacity onPress={this.props.onPress}>
+          <Text style={this.styles.header}>{header}</Text>
+        </TouchableOpacity>
       </View>
     );
   }
