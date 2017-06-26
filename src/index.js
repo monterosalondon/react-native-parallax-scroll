@@ -128,7 +128,7 @@ export default class ParallaxScroll extends PureComponent {
       !(dataSource && renderRow);
     let ScrollableComponent = this.props.scrollableComponent;
 
-    if (useNativeDriver && !Animated.ScrollView.isPrototypeOf(ScrollableComponent)) {
+    if (useNativeDriver && Animated.ScrollView !== ScrollableComponent) {
       ScrollableComponent = Animated.createAnimatedComponent(ScrollableComponent);
     }
 
