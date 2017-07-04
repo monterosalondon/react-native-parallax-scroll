@@ -60,6 +60,7 @@ The `ParallaxScroll` component adds a few additional properties, as described be
 | `style` | `object` | `{}` | Component's styles
 | `width` | `number` | `Dimensions.get('window').width` | Component's width. |
 | `height` | `number` | `Dimensions.get('window').height` | Component's height. |
+| `innerRef` | `func` | `null` | To get a reference to the scrollable component. |
 | `scrollStyle` | `object` | `{}` | These styles will be applied to the scroll view. |
 | `headerHeight` | `number` | `45` | This is the height of sticky(fixed) header. |
 | `renderHeader` | `func` | `null` | This renders an optional sticky(fixed) header that will be visible to the top of the view. |

@@ -17,6 +17,7 @@ export default class ParallaxScroll extends PureComponent {
     style: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
     width: PropTypes.number,
     height: PropTypes.number,
+    innerRef: PropTypes.func,
     sections: PropTypes.oneOfType([PropTypes.array]),
     onScroll: PropTypes.func,
     children: PropTypes.oneOfType([PropTypes.array, PropTypes.element]),
@@ -53,6 +54,7 @@ export default class ParallaxScroll extends PureComponent {
     style: {},
     width: window.width,
     height: window.height,
+    innerRef: null,
     sections: null,
     children: null,
     onScroll: null,
@@ -139,6 +141,7 @@ export default class ParallaxScroll extends PureComponent {
 
         <ScrollableComponent
           {...scrollViewProps}
+          ref={this._ref}
           style={style}
           throttle={16}
           onScroll={
@@ -169,6 +172,12 @@ export default class ParallaxScroll extends PureComponent {
       </View>
     );
   }
+
+  _ref = (ref) => {
+    if (typeof this.props.innerRef === 'function') {
+      this.props.innerRef(ref._component);
+    }
+  };
 
   _renderParallaxBackground(withHeader) {
     const {

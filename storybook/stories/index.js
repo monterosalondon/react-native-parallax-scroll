@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
-import { FlatList, ListView, SectionList } from 'react-native';
+import { FlatList, ListView, SectionList, TouchableOpacity } from 'react-native';
 import { storiesOf, action } from '@storybook/react-native';
 import { withKnobs, text, boolean, number } from '@storybook/addon-knobs';
 
@@ -18,6 +18,8 @@ const bacground = (
 const dateSource = new ListView.DataSource({
   rowHasChanged: (r1, r2) => r1 !== r2,
 });
+
+let innerRef;
 
 storiesOf('ParallaxScroll', module)
   .addDecorator(withKnobs)
@@ -110,6 +112,32 @@ storiesOf('ParallaxScroll', module)
       parallaxForegroundScrollSpeed={number('Foreground scroll speed', 2.5)}
     >
       <Welcome repeat={number('Repeat text times', 5)} />
+    </ParallaxScroll>),
+  )
+  .add('with innerRef and scrollTo', () =>
+    (<ParallaxScroll
+      innerRef={instance => (innerRef = instance)}
+      renderHeader={() => <Header onPress={action('onPress Header')} />}
+      headerHeight={number('Header height', 50)}
+      isHeaderFixed={boolean('Is header fixed', false)}
+      parallaxHeight={number('Parallax height', 250)}
+      useNativeDriver={boolean('Use native driver', true)}
+      isBackgroundScalable={boolean('Is background scalable', true)}
+      headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 0)')}
+      isForegroundTouchable={boolean('Is foreground touchable', false)}
+      onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
+      renderParallaxBackground={() => bacground}
+      fadeOutParallaxBackground={boolean('Fade out background', false)}
+      renderParallaxForeground={() => <Foreground />}
+      fadeOutParallaxForeground={boolean('Fade out foreground', true)}
+      headerFixedBackgroundColor={text('Header fixed bacground color', 'rgba(51, 51, 51, 1)')}
+      parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
+      parallaxForegroundScrollSpeed={number('Foreground scroll speed', 2.5)}
+    >
+      <Welcome repeat={number('Repeat text times', 5)} />
+      <TouchableOpacity onPress={() => innerRef.scrollTo({ x: 0, y: 0, animated: true })}>
+        <Welcome repeat={number('Repeat text times', 1)} />
+      </TouchableOpacity>
     </ParallaxScroll>),
   )
   .add('List view', () =>
