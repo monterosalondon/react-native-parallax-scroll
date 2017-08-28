@@ -12,7 +12,7 @@ import Foreground from './Foreground';
 import Background from './Background';
 
 const bacground = (
-  <Background source={{ uri: 'https://pp.userapi.com/c630728/v630728630/38999/C-13dha7VxI.jpg' }} />
+  <Background source={{ uri: `http://lorempixel.com/600/400/nightlife/?date=${Date.now()}` }} />
 );
 
 const dateSource = new ListView.DataSource({
@@ -21,10 +21,13 @@ const dateSource = new ListView.DataSource({
 
 let innerRef;
 
+const style = { backgroundColor: '#000' };
+
 storiesOf('ParallaxScroll', module)
   .addDecorator(withKnobs)
   .add('with bacground', () =>
     (<ParallaxScroll
+      style={style}
       parallaxHeight={number('Parallax height', 250)}
       useNativeDriver={boolean('Use native driver', false)}
       isBackgroundScalable={boolean('Is background scalable', true)}
@@ -37,6 +40,7 @@ storiesOf('ParallaxScroll', module)
   )
   .add('with header', () =>
     (<ParallaxScroll
+      style={style}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
       headerHeight={number('Header height', 50)}
       isHeaderFixed={boolean('Is header fixed', true)}
@@ -55,6 +59,7 @@ storiesOf('ParallaxScroll', module)
   )
   .add('without header background', () =>
     (<ParallaxScroll
+      style={style}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
       headerHeight={number('Header height', 50)}
       isHeaderFixed={boolean('Is header fixed', false)}
@@ -72,6 +77,7 @@ storiesOf('ParallaxScroll', module)
   )
   .add('with foreground', () =>
     (<ParallaxScroll
+      style={style}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
       headerHeight={number('Header height', 50)}
       isHeaderFixed={boolean('Is header fixed', true)}
@@ -94,6 +100,7 @@ storiesOf('ParallaxScroll', module)
   )
   .add('with native driver', () =>
     (<ParallaxScroll
+      style={style}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
       headerHeight={number('Header height', 50)}
       isHeaderFixed={boolean('Is header fixed', false)}
@@ -116,6 +123,7 @@ storiesOf('ParallaxScroll', module)
   )
   .add('with innerRef and scrollTo', () =>
     (<ParallaxScroll
+      style={style}
       innerRef={instance => (innerRef = instance)}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
       headerHeight={number('Header height', 50)}
@@ -142,6 +150,7 @@ storiesOf('ParallaxScroll', module)
   )
   .add('List view', () =>
     (<ParallaxScroll
+      style={style}
       dataSource={dateSource.cloneWithRows([1, 2, 3, 4, 5])}
       renderRow={item => <Welcome repeat={item} />}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
@@ -165,6 +174,7 @@ storiesOf('ParallaxScroll', module)
   )
   .add('Flat list', () =>
     (<ParallaxScroll
+      style={style}
       data={[{ key: 1 }, { key: 2 }, { key: 3 }, { key: 4 }, { key: 5 }, { key: 6 }, { key: 7 }]}
       renderItem={({ item: { key } }) => <Welcome repeat={key} />}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
@@ -188,6 +198,7 @@ storiesOf('ParallaxScroll', module)
   )
   .add('Section list homogenous', () =>
     (<ParallaxScroll
+      style={style}
       sections={[
         { data: [{ key: 1 }], key: 1 },
         { data: [{ key: 2 }], key: 2 },
@@ -216,6 +227,7 @@ storiesOf('ParallaxScroll', module)
   )
   .add('Section list heterogeneous', () =>
     (<ParallaxScroll
+      style={style}
       sections={[
         { data: [{ key: 1 }], key: 1, renderItem: ({ item: { key } }) => <Welcome repeat={key} /> },
         { data: [{ key: 2 }], key: 2, renderItem: ({ item: { key } }) => <Welcome repeat={key} /> },
