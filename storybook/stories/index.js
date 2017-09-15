@@ -1,6 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
-import { FlatList, ListView, SectionList, TouchableOpacity } from 'react-native';
+import Lightbox from 'react-native-lightbox';
+import { Image, FlatList, ListView, SectionList, Dimensions, TouchableOpacity } from 'react-native';
 import { storiesOf, action } from '@storybook/react-native';
 import { withKnobs, text, boolean, number } from '@storybook/addon-knobs';
 
@@ -11,9 +12,26 @@ import Welcome from './Welcome';
 import Foreground from './Foreground';
 import Background from './Background';
 
-const bacground = (
-  <Background source={{ uri: `http://lorempixel.com/600/400/nightlife/?date=${Date.now()}` }} />
-);
+const window = Dimensions.get('window');
+
+const RATIO = 9 / 16;
+
+const getBackground = () =>
+  <Background source={{ uri: `http://lorempixel.com/600/400/nightlife/?date=${Date.now()}` }} />;
+
+const getForeground = () => <Foreground onPress={action('onPress Foreground')} />;
+
+const getLightbox = () =>
+  (<Lightbox>
+    <Image
+      style={{
+        width: window.width,
+        height: window.width * RATIO + 45,
+        position: 'relative',
+      }}
+      source={{ uri: `http://lorempixel.com/600/400/nightlife/?date=${Date.now()}` }}
+    />
+  </Lightbox>);
 
 const dateSource = new ListView.DataSource({
   rowHasChanged: (r1, r2) => r1 !== r2,
@@ -31,7 +49,7 @@ storiesOf('ParallaxScroll', module)
       parallaxHeight={number('Parallax height', 250)}
       useNativeDriver={boolean('Use native driver', false)}
       isBackgroundScalable={boolean('Is background scalable', true)}
-      renderParallaxBackground={() => bacground}
+      renderParallaxBackground={getBackground}
       fadeOutParallaxBackground={boolean('Fade out background', false)}
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
     >
@@ -49,7 +67,7 @@ storiesOf('ParallaxScroll', module)
       isBackgroundScalable={boolean('Is background scalable', true)}
       headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 0)')}
       onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
-      renderParallaxBackground={() => bacground}
+      renderParallaxBackground={getBackground}
       fadeOutParallaxBackground={boolean('Fade out background', true)}
       headerFixedBackgroundColor={text('Header fixed bacground color', 'rgba(51, 51, 51, 1)')}
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
@@ -68,7 +86,7 @@ storiesOf('ParallaxScroll', module)
       isBackgroundScalable={boolean('Is background scalable', true)}
       headerBackgroundColor={text('Header bacground color', '')}
       onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
-      renderParallaxBackground={() => bacground}
+      renderParallaxBackground={getBackground}
       fadeOutParallaxBackground={boolean('Fade out background', false)}
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
     >
@@ -87,9 +105,9 @@ storiesOf('ParallaxScroll', module)
       headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 0)')}
       isForegroundTouchable={boolean('Is foreground touchable', false)}
       onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
-      renderParallaxBackground={() => bacground}
+      renderParallaxBackground={getBackground}
       fadeOutParallaxBackground={boolean('Fade out background', false)}
-      renderParallaxForeground={() => <Foreground onPress={action('onPress Foreground')} />}
+      renderParallaxForeground={getForeground}
       fadeOutParallaxForeground={boolean('Fade out foreground', true)}
       headerFixedBackgroundColor={text('Header fixed bacground color', 'rgba(51, 51, 51, 1)')}
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
@@ -110,10 +128,32 @@ storiesOf('ParallaxScroll', module)
       headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 0)')}
       isForegroundTouchable={boolean('Is foreground touchable', false)}
       onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
-      renderParallaxBackground={() => bacground}
+      renderParallaxBackground={getBackground}
       fadeOutParallaxBackground={boolean('Fade out background', false)}
-      renderParallaxForeground={() => <Foreground />}
+      renderParallaxForeground={getForeground}
       fadeOutParallaxForeground={boolean('Fade out foreground', true)}
+      headerFixedBackgroundColor={text('Header fixed bacground color', 'rgba(51, 51, 51, 1)')}
+      parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
+      parallaxForegroundScrollSpeed={number('Foreground scroll speed', 2.5)}
+    >
+      <Welcome repeat={number('Repeat text times', 5)} />
+    </ParallaxScroll>),
+  )
+  .add('with lightbox', () =>
+    (<ParallaxScroll
+      style={style}
+      renderHeader={() => <Header onPress={action('onPress Header')} />}
+      headerHeight={number('Header height', 50)}
+      isHeaderFixed={boolean('Is header fixed', true)}
+      parallaxHeight={number('Parallax height', 250)}
+      useNativeDriver={boolean('Use native driver', true)}
+      isBackgroundScalable={boolean('Is background scalable', true)}
+      headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 1)')}
+      isForegroundTouchable={boolean('Is foreground touchable', true)}
+      onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
+      fadeOutParallaxBackground={boolean('Fade out background', false)}
+      renderParallaxForeground={getLightbox}
+      fadeOutParallaxForeground={boolean('Fade out foreground', false)}
       headerFixedBackgroundColor={text('Header fixed bacground color', 'rgba(51, 51, 51, 1)')}
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
       parallaxForegroundScrollSpeed={number('Foreground scroll speed', 2.5)}
@@ -134,9 +174,9 @@ storiesOf('ParallaxScroll', module)
       headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 0)')}
       isForegroundTouchable={boolean('Is foreground touchable', false)}
       onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
-      renderParallaxBackground={() => bacground}
+      renderParallaxBackground={getBackground}
       fadeOutParallaxBackground={boolean('Fade out background', false)}
-      renderParallaxForeground={() => <Foreground />}
+      renderParallaxForeground={getForeground}
       fadeOutParallaxForeground={boolean('Fade out foreground', true)}
       headerFixedBackgroundColor={text('Header fixed bacground color', 'rgba(51, 51, 51, 1)')}
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
@@ -163,9 +203,9 @@ storiesOf('ParallaxScroll', module)
       headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 1)')}
       isForegroundTouchable={boolean('Is foreground touchable', false)}
       onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
-      renderParallaxBackground={() => bacground}
+      renderParallaxBackground={getBackground}
       fadeOutParallaxBackground={boolean('Fade out background', false)}
-      renderParallaxForeground={() => <Foreground />}
+      renderParallaxForeground={getForeground}
       fadeOutParallaxForeground={boolean('Fade out foreground', true)}
       headerFixedBackgroundColor={text('Header fixed bacground color', 'rgba(51, 51, 51, 1)')}
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
@@ -187,9 +227,9 @@ storiesOf('ParallaxScroll', module)
       headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 1)')}
       isForegroundTouchable={boolean('Is foreground touchable', false)}
       onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
-      renderParallaxBackground={() => bacground}
+      renderParallaxBackground={getBackground}
       fadeOutParallaxBackground={boolean('Fade out background', false)}
-      renderParallaxForeground={() => <Foreground />}
+      renderParallaxForeground={getForeground}
       fadeOutParallaxForeground={boolean('Fade out foreground', true)}
       headerFixedBackgroundColor={text('Header fixed bacground color', 'rgba(51, 51, 51, 1)')}
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
@@ -216,9 +256,9 @@ storiesOf('ParallaxScroll', module)
       headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 1)')}
       isForegroundTouchable={boolean('Is foreground touchable', false)}
       onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
-      renderParallaxBackground={() => bacground}
+      renderParallaxBackground={getBackground}
       fadeOutParallaxBackground={boolean('Fade out background', false)}
-      renderParallaxForeground={() => <Foreground />}
+      renderParallaxForeground={getForeground}
       fadeOutParallaxForeground={boolean('Fade out foreground', true)}
       headerFixedBackgroundColor={text('Header fixed bacground color', 'rgba(51, 51, 51, 1)')}
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
@@ -245,9 +285,9 @@ storiesOf('ParallaxScroll', module)
       headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 0)')}
       isForegroundTouchable={boolean('Is foreground touchable', false)}
       onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
-      renderParallaxBackground={() => bacground}
+      renderParallaxBackground={getBackground}
       fadeOutParallaxBackground={boolean('Fade out background', false)}
-      renderParallaxForeground={() => <Foreground />}
+      renderParallaxForeground={getForeground}
       fadeOutParallaxForeground={boolean('Fade out foreground', true)}
       headerFixedBackgroundColor={text('Header fixed bacground color', 'rgba(51, 51, 51, 1)')}
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}

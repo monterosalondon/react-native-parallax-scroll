@@ -20,9 +20,11 @@ export default class Welcome extends Component {
   styles = {
     wrapper: {
       flex: 1,
+      zIndex: 10,
       marginLeft: 10,
       marginRight: 10,
       padding: 24,
+      position: 'relative',
       backgroundColor: '#eee',
       justifyContent: 'center',
     },

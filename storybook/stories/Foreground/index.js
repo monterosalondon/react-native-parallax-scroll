@@ -8,7 +8,6 @@ export default class Header extends Component {
   styles = {
     wrapper: {
       flex: 1,
-      marginTop: 60,
       alignItems: 'center',
       justifyContent: 'center',
     },
