@@ -6,8 +6,6 @@ import PropTypes from 'prop-types';
 
 const window = Dimensions.get('window');
 
-const renderEmptyView = () => <View />;
-
 const KEY = '__PARALLAX_SCROLL__';
 const RATIO = 9 / 16;
 
@@ -71,8 +69,8 @@ export default class ParallaxScroll extends PureComponent {
     headerBackgroundColor: 'rgba(0, 0, 0, 0)',
     contentContainerStyle: {},
     onChangeHeaderVisibility: () => {},
-    renderParallaxBackground: renderEmptyView,
-    renderParallaxForeground: renderEmptyView,
+    renderParallaxBackground: null,
+    renderParallaxForeground: null,
     fadeOutParallaxForeground: false,
     fadeOutParallaxBackground: false,
     headerFixedBackgroundColor: 'rgba(0, 0, 0, 1)',
@@ -267,6 +265,7 @@ export default class ParallaxScroll extends PureComponent {
       top: 0,
       width,
       height,
+      zIndex: 1,
     };
 
     return (
@@ -303,7 +302,7 @@ export default class ParallaxScroll extends PureComponent {
       top: 0,
       width,
       height,
-      zIndex: 10,
+      zIndex: 2,
     };
     const style = {
       flex: 1,
