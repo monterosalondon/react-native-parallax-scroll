@@ -17,7 +17,7 @@ const window = Dimensions.get('window');
 const RATIO = 9 / 16;
 
 const getBackground = () =>
-  <Background source={{ uri: `http://lorempixel.com/600/400/nightlife/?date=${Date.now()}` }} />;
+  <Background source={{ uri: `https://lorempixel.com/600/400/nightlife/?date=${Date.now()}` }} />;
 
 const getForeground = () => <Foreground onPress={action('onPress Foreground')} />;
 
@@ -29,7 +29,7 @@ const getLightbox = () =>
         height: window.width * RATIO + 45,
         position: 'relative',
       }}
-      source={{ uri: `http://lorempixel.com/600/400/nightlife/?date=${Date.now()}` }}
+      source={{ uri: `https://lorempixel.com/600/400/nightlife/?date=${Date.now()}` }}
     />
   </Lightbox>);
 

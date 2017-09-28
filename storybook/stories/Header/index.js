@@ -14,6 +14,7 @@ export default class Header extends Component {
     header: {
       color: '#fff',
       fontSize: 18,
+      backgroundColor: 'transparent',
     },
   };
 
