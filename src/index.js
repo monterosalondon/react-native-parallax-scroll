@@ -134,10 +134,6 @@ export default class ParallaxScroll extends PureComponent {
       stickyHeaderIndices.push(stickyHeaderIndices.length);
     }
 
-    if (isRenderChildComponents && renderHeader) {
-      stickyHeaderIndices.push(stickyHeaderIndices.length + 2);
-    }
-
     if (useNativeDriver && Animated.ScrollView !== ScrollableComponent) {
       ScrollableComponent = Animated.createAnimatedComponent(ScrollableComponent);
     }
@@ -172,14 +168,11 @@ export default class ParallaxScroll extends PureComponent {
           {isRenderChildComponents && this._renderEmptyView()}
 
           {isRenderChildComponents && children}
-
-          {isRenderChildComponents && renderHeader && this._renderHeader()}
-
         </ScrollableComponent>
 
         {!isRenderChildComponents && renderParallaxForeground && this._renderParallaxForeground()}
 
-        {!isRenderChildComponents && renderHeader && this._renderHeader()}
+        {renderHeader && this._renderHeader()}
       </View>
     );
   }
@@ -322,18 +315,8 @@ export default class ParallaxScroll extends PureComponent {
       style.transform = [
         {
           translateY: this.scrollY.interpolate({
-            inputRange: [-parallaxHeight - height, 0, parallaxHeight - height, parallaxHeight],
-            outputRange: [-parallaxHeight - height, 0, 0, -height],
-            extrapolate: 'clamp',
-          }),
-        },
-      ];
-    } else {
-      style.transform = [
-        {
-          translateY: this.scrollY.interpolate({
-            inputRange: [-parallaxHeight, 0],
-            outputRange: [-parallaxHeight, 0],
+            inputRange: [0, parallaxHeight - height, parallaxHeight],
+            outputRange: [0, 0, -height],
             extrapolate: 'clamp',
           }),
         },
