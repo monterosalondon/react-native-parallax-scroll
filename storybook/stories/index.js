@@ -119,9 +119,11 @@ storiesOf('ParallaxScroll', module)
   .add('with native driver', () =>
     (<ParallaxScroll
       style={style}
-      renderHeader={() => <Header onPress={action('onPress Header')} />}
-      headerHeight={number('Header height', 50)}
-      isHeaderFixed={boolean('Is header fixed', false)}
+      renderHeader={({ animatedValue }) =>
+        <Header onPress={action('onPress Header')} useBg animatedValue={animatedValue} />
+      }
+      headerHeight={number('Header height', 90)}
+      isHeaderFixed={boolean('Is header fixed', true)}
       parallaxHeight={number('Parallax height', 250)}
       useNativeDriver={boolean('Use native driver', true)}
       isBackgroundScalable={boolean('Is background scalable', true)}
@@ -221,7 +223,7 @@ storiesOf('ParallaxScroll', module)
       headerHeight={number('Header height', 50)}
       isHeaderFixed={boolean('Is header fixed', false)}
       parallaxHeight={number('Parallax height', 250)}
-      useNativeDriver={boolean('Use native driver', true)}
+      useNativeDriver={boolean('Use native driver', false)}
       scrollableComponent={FlatList}
       isBackgroundScalable={boolean('Is background scalable', true)}
       headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 1)')}

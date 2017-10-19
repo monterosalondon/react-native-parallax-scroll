@@ -20,7 +20,7 @@ export default class Header extends Component {
 
   render() {
     return (
-      <View style={this.styles.wrapper}>
+      <View style={this.styles.wrapper} pointerEvents="box-none">
         <TouchableOpacity onPress={this.props.onPress}>
           <Text style={this.styles.header}>{header}</Text>
         </TouchableOpacity>
