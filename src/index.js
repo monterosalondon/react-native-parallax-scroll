@@ -84,17 +84,11 @@ export default class ParallaxScroll extends PureComponent {
   constructor(props) {
     super(props);
 
-    this._onAnimatedScrollWithND = Animated.event(
-      [{ nativeEvent: { contentOffset: { y: this.scrollY } } }],
-      {
-        listener: this._onScroll,
-        useNativeDriver: true,
-      },
-    );
     this._onAnimatedScroll = Animated.event(
       [{ nativeEvent: { contentOffset: { y: this.scrollY } } }],
       {
         listener: this._onScroll,
+        useNativeDriver: props.useNativeDriver,
       },
     );
   }
@@ -132,7 +126,7 @@ export default class ParallaxScroll extends PureComponent {
       stickyHeaderIndices.push(stickyHeaderIndices.length);
     }
 
-    if (useNativeDriver && Animated.ScrollView !== ScrollableComponent) {
+    if (Animated.ScrollView !== ScrollableComponent) {
       ScrollableComponent = Animated.createAnimatedComponent(ScrollableComponent);
     }
 
@@ -144,12 +138,10 @@ export default class ParallaxScroll extends PureComponent {
         <ScrollableComponent
           {...scrollViewProps}
           ref={this._ref}
+          data={data && renderItem && this._getFlatData(data)}
           style={style}
           throttle={16}
-          onScroll={
-            this.props.useNativeDriver ? this._onAnimatedScrollWithND : this._onAnimatedScroll
-          }
-          data={data && renderItem && this._getFlatData(data)}
+          onScroll={this._onAnimatedScroll}
           sections={sections && this._getSectionData(sections)}
           renderRow={dataSource && renderRow && this._renderRow}
           renderItem={renderItem && this._renderItem}
@@ -228,7 +220,7 @@ export default class ParallaxScroll extends PureComponent {
         }}
         pointerEvents="box-none"
       >
-        {renderParallaxBackground()}
+        {renderParallaxBackground({ width, height, animatedValue: this.scrollY })}
       </Animated.View>
     );
   }
@@ -280,7 +272,7 @@ export default class ParallaxScroll extends PureComponent {
           }}
           pointerEvents="box-none"
         >
-          {renderParallaxForeground()}
+          {renderParallaxForeground({ width, height, animatedValue: this.scrollY })}
         </Animated.View>
       </View>
     );
@@ -293,6 +285,7 @@ export default class ParallaxScroll extends PureComponent {
       renderHeader,
       isHeaderFixed,
       parallaxHeight,
+      useNativeDriver,
       headerBackgroundColor,
       headerFixedBackgroundColor,
     } = this.props;
@@ -322,20 +315,20 @@ export default class ParallaxScroll extends PureComponent {
       ];
     }
 
-    if (!this.props.useNativeDriver && headerBackgroundColor) {
+    if (!useNativeDriver && headerBackgroundColor) {
       style.backgroundColor = this.scrollY.interpolate({
         inputRange: [0, parallaxHeight - height],
         outputRange: [headerBackgroundColor, headerFixedBackgroundColor],
         extrapolate: 'clamp',
       });
-    } else if (this.props.useNativeDriver && headerBackgroundColor) {
+    } else if (useNativeDriver && headerBackgroundColor) {
       style.backgroundColor = headerBackgroundColor;
     }
 
     return (
       <View style={wrapperStyle} pointerEvents="box-none">
         <Animated.View style={style} pointerEvents="box-none">
-          {renderHeader()}
+          {renderHeader({ width, height, animatedValue: this.scrollY })}
         </Animated.View>
       </View>
     );
