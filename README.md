@@ -20,7 +20,7 @@ $ npm install @monterosa/react-native-parallax-scroll --save
 YouTube - https://www.youtube.com/watch?v=zM4koduK32Y
 
 | ![](./demo/ios-demo-1.gif) | ![](./demo/ios-demo-2.gif) |
-| ![](./demo/demo-1.gif) | ![](./demo/demo-2.gif) | ![](./demo/demo-3.gif) |
+ ![](./demo/ios-demo-3.gif) | ![](./demo/demo-1.gif) | ![](./demo/demo-2.gif) |
 
 ## Basic Usage
 
