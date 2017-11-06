@@ -11,6 +11,7 @@ import Header from './Header';
 import Welcome from './Welcome';
 import Foreground from './Foreground';
 import Background from './Background';
+import FixedChildrenExample from './FixedChildrenExample';
 
 const window = Dimensions.get('window');
 
@@ -308,4 +309,5 @@ storiesOf('ParallaxScroll', module)
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
       parallaxForegroundScrollSpeed={number('Foreground scroll speed', 2.5)}
     />),
-  );
+  )
+  .add('Fixed children example', () => <FixedChildrenExample />);
