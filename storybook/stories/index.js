@@ -46,10 +46,12 @@ storiesOf('ParallaxScroll', module)
   .add('with bacground', () =>
     (<ParallaxScroll
       style={style}
+      onHeaderFixed={action('onHeaderFixed')}
       parallaxHeight={number('Parallax height', 250)}
       useNativeDriver={boolean('Use native driver', false)}
       isBackgroundScalable={boolean('Is background scalable', true)}
       renderParallaxBackground={getBackground}
+      onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
       fadeOutParallaxBackground={boolean('Fade out background', false)}
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
     >
@@ -61,13 +63,14 @@ storiesOf('ParallaxScroll', module)
       style={style}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
       headerHeight={number('Header height', 50)}
+      onHeaderFixed={action('onHeaderFixed')}
       isHeaderFixed={boolean('Is header fixed', true)}
       parallaxHeight={number('Parallax height', 250)}
       useNativeDriver={boolean('Use native driver', false)}
       isBackgroundScalable={boolean('Is background scalable', true)}
       headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 0)')}
-      onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
       renderParallaxBackground={getBackground}
+      onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
       fadeOutParallaxBackground={boolean('Fade out background', true)}
       headerFixedBackgroundColor={text('Header fixed bacground color', 'rgba(51, 51, 51, 1)')}
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
@@ -80,6 +83,7 @@ storiesOf('ParallaxScroll', module)
       style={style}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
       headerHeight={number('Header height', 50)}
+      onHeaderFixed={action('onHeaderFixed')}
       isHeaderFixed={boolean('Is header fixed', false)}
       parallaxHeight={number('Parallax height', 250)}
       useNativeDriver={boolean('Use native driver', false)}
@@ -99,6 +103,7 @@ storiesOf('ParallaxScroll', module)
       renderHeader={() => <Header onPress={action('onPress Header')} />}
       headerHeight={number('Header height', 50)}
       isHeaderFixed={boolean('Is header fixed', true)}
+      onHeaderFixed={action('onHeaderFixed')}
       parallaxHeight={number('Parallax height', 250)}
       useNativeDriver={boolean('Use native driver', false)}
       isBackgroundScalable={boolean('Is background scalable', true)}
@@ -124,15 +129,17 @@ storiesOf('ParallaxScroll', module)
       }
       headerHeight={number('Header height', 90)}
       isHeaderFixed={boolean('Is header fixed', true)}
+      onHeaderFixed={action('onHeaderFixed')}
       parallaxHeight={number('Parallax height', 250)}
       useNativeDriver={boolean('Use native driver', true)}
       isBackgroundScalable={boolean('Is background scalable', true)}
       headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 0)')}
+      headerFixedTransformY={text('Header fixed transform y', 30)}
       isForegroundTouchable={boolean('Is foreground touchable', false)}
-      onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
       renderParallaxBackground={getBackground}
-      fadeOutParallaxBackground={boolean('Fade out background', false)}
+      onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
       renderParallaxForeground={getForeground}
+      fadeOutParallaxBackground={boolean('Fade out background', false)}
       fadeOutParallaxForeground={boolean('Fade out foreground', true)}
       headerFixedBackgroundColor={text('Header fixed bacground color', 'rgba(51, 51, 51, 1)')}
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
@@ -146,6 +153,7 @@ storiesOf('ParallaxScroll', module)
       style={style}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
       headerHeight={number('Header height', 50)}
+      onHeaderFixed={action('onHeaderFixed')}
       isHeaderFixed={boolean('Is header fixed', true)}
       parallaxHeight={number('Parallax height', 250)}
       useNativeDriver={boolean('Use native driver', true)}
@@ -169,6 +177,7 @@ storiesOf('ParallaxScroll', module)
       innerRef={instance => (innerRef = instance)}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
       headerHeight={number('Header height', 50)}
+      onHeaderFixed={action('onHeaderFixed')}
       isHeaderFixed={boolean('Is header fixed', false)}
       parallaxHeight={number('Parallax height', 250)}
       useNativeDriver={boolean('Use native driver', true)}
@@ -197,6 +206,7 @@ storiesOf('ParallaxScroll', module)
       renderRow={item => <Welcome repeat={item} />}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
       headerHeight={number('Header height', 50)}
+      onHeaderFixed={action('onHeaderFixed')}
       isHeaderFixed={boolean('Is header fixed', true)}
       parallaxHeight={number('Parallax height', 250)}
       useNativeDriver={boolean('Use native driver', true)}
@@ -221,6 +231,7 @@ storiesOf('ParallaxScroll', module)
       renderItem={({ item: { key } }) => <Welcome repeat={key} />}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
       headerHeight={number('Header height', 50)}
+      onHeaderFixed={action('onHeaderFixed')}
       isHeaderFixed={boolean('Is header fixed', false)}
       parallaxHeight={number('Parallax height', 250)}
       useNativeDriver={boolean('Use native driver', false)}
@@ -250,6 +261,7 @@ storiesOf('ParallaxScroll', module)
       renderItem={({ item: { key } }) => <Welcome repeat={key} />}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
       headerHeight={number('Header height', 50)}
+      onHeaderFixed={action('onHeaderFixed')}
       isHeaderFixed={boolean('Is header fixed', false)}
       parallaxHeight={number('Parallax height', 250)}
       useNativeDriver={boolean('Use native driver', true)}
@@ -279,6 +291,7 @@ storiesOf('ParallaxScroll', module)
       ]}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
       headerHeight={number('Header height', 50)}
+      onHeaderFixed={action('onHeaderFixed')}
       isHeaderFixed={boolean('Is header fixed', false)}
       parallaxHeight={number('Parallax height', 250)}
       useNativeDriver

@@ -26,10 +26,12 @@ export default class ParallaxScroll extends PureComponent {
     headerHeight: PropTypes.number,
     renderHeader: PropTypes.func,
     isHeaderFixed: PropTypes.bool,
+    onHeaderFixed: PropTypes.func,
     parallaxHeight: PropTypes.number,
     useNativeDriver: PropTypes.bool,
     scrollableComponent: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
     isBackgroundScalable: PropTypes.bool,
+    headerFixedTransformY: PropTypes.number,
     headerBackgroundColor: PropTypes.string,
     contentContainerStyle: PropTypes.oneOfType([
       PropTypes.array,
@@ -62,10 +64,12 @@ export default class ParallaxScroll extends PureComponent {
     headerHeight: 45,
     renderHeader: null,
     isHeaderFixed: false,
+    onHeaderFixed: () => {},
     parallaxHeight: window.width * RATIO,
     useNativeDriver: false,
     scrollableComponent: Animated.ScrollView,
     isBackgroundScalable: true,
+    headerFixedTransformY: 0,
     headerBackgroundColor: 'rgba(0, 0, 0, 0)',
     contentContainerStyle: {},
     onChangeHeaderVisibility: () => {},
@@ -79,6 +83,7 @@ export default class ParallaxScroll extends PureComponent {
   };
 
   scrollY = new Animated.Value(0);
+  isHeaderFixed = false;
   isHeaderVisibible = true;
 
   constructor(props) {
@@ -286,6 +291,7 @@ export default class ParallaxScroll extends PureComponent {
       isHeaderFixed,
       parallaxHeight,
       useNativeDriver,
+      headerFixedTransformY,
       headerBackgroundColor,
       headerFixedBackgroundColor,
     } = this.props;
@@ -309,6 +315,16 @@ export default class ParallaxScroll extends PureComponent {
           translateY: this.scrollY.interpolate({
             inputRange: [0, parallaxHeight - height, parallaxHeight],
             outputRange: [0, 0, -height],
+            extrapolate: 'clamp',
+          }),
+        },
+      ];
+    } else if (headerFixedTransformY) {
+      style.transform = [
+        {
+          translateY: this.scrollY.interpolate({
+            inputRange: [0, parallaxHeight - height],
+            outputRange: [0, -headerFixedTransformY],
             extrapolate: 'clamp',
           }),
         },
@@ -374,16 +390,33 @@ export default class ParallaxScroll extends PureComponent {
   _renderEmptyView = () => <View style={{ height: this.props.parallaxHeight }} />;
 
   _onScroll = (e) => {
-    const { onScroll, parallaxHeight, onChangeHeaderVisibility } = this.props;
-    const isHeaderVisibible = e.nativeEvent.contentOffset.y < parallaxHeight;
+    const contentOffsetY = e.nativeEvent.contentOffset.y;
+    const {
+      onScroll,
+      renderHeader,
+      headerHeight,
+      isHeaderFixed,
+      onHeaderFixed,
+      parallaxHeight,
+      headerFixedTransformY,
+      onChangeHeaderVisibility,
+    } = this.props;
+    const isHeaderFixedAfterScroll =
+      contentOffsetY > parallaxHeight - headerHeight + headerFixedTransformY;
+    const isHeaderVisibibleAfterScroll = contentOffsetY < parallaxHeight;
 
     if (onScroll) {
       onScroll(e);
     }
 
-    if (this.isHeaderVisibible !== isHeaderVisibible) {
-      this.isHeaderVisibible = isHeaderVisibible;
-      onChangeHeaderVisibility(isHeaderVisibible);
+    if (renderHeader && isHeaderFixed && this.isHeaderFixed !== isHeaderFixedAfterScroll) {
+      this.isHeaderFixed = isHeaderFixedAfterScroll;
+      onHeaderFixed(isHeaderFixedAfterScroll);
+    }
+
+    if (renderHeader && !isHeaderFixed && this.isHeaderVisibible !== isHeaderVisibibleAfterScroll) {
+      this.isHeaderVisibible = isHeaderVisibibleAfterScroll;
+      onChangeHeaderVisibility(isHeaderVisibibleAfterScroll);
     }
   };
 }

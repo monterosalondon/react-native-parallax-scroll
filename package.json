@@ -10,8 +10,8 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "adb-revers-8081": "adb reverse tcp:8081 tcp:8081",
-    "adb-revers-7007": "adb reverse tcp:7007 tcp:7007",
+    "adb-reverse-8081": "adb reverse tcp:8081 tcp:8081",
+    "adb-reverse-7007": "adb reverse tcp:7007 tcp:7007",
     "lint": "eslint -c ./.eslintrc ./src/index.js",
     "format": "prettier-eslint --write ./src/index.js ./storybook/**/*.js",
     "storybook": "storybook start -p 7007"
@@ -38,7 +38,7 @@
     "prop-types": "^15.5.8",
     "react": "^16.0.0-alpha.12",
     "react-dom": "^16.0.0-alpha.12",
-    "react-native": "0.45.1",
+    "react-native": "^0.49.5",
     "react-native-lightbox": "^0.7.0"
   },
   "keywords": [

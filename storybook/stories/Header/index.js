@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Animated, TouchableOpacity } from 'react-native';
+import { Text, Animated, TouchableOpacity } from 'react-native';
 
 export default class Header extends Component {
   static propTypes = {
@@ -38,14 +38,7 @@ export default class Header extends Component {
 
     const translateY = this.props.animatedValue.interpolate({
       inputRange: [0, 160],
-      outputRange: [0, -30],
-      extrapolateLeft: 'clamp',
-      extrapolateRight: 'clamp',
-    });
-
-    const translateTextY = this.props.animatedValue.interpolate({
-      inputRange: [0, 160],
-      outputRange: [0, 30],
+      outputRange: [0, 20],
       extrapolateLeft: 'clamp',
       extrapolateRight: 'clamp',
     });
@@ -54,16 +47,16 @@ export default class Header extends Component {
 
     return (
       <Animated.View
-        style={[this.styles.wrapper, { backgroundColor, transform: [{ translateY }] }]}
+        style={[this.styles.wrapper, { backgroundColor }]}
         pointerEvents="box-none"
       >
-        <TouchableOpacity onPress={this.props.onPress}>
-          <Animated.Text
-            style={[this.styles.header, { transform: [{ scale }, { translateY: translateTextY }] }]}
-          >
-            Welcome to React Native Parallax Scroll
-          </Animated.Text>
-        </TouchableOpacity>
+        <Animated.View style={{ transform: [{ scale }, { translateY }] }}>
+          <TouchableOpacity onPress={this.props.onPress}>
+            <Text style={this.styles.header} >
+              Welcome to React Native Parallax Scroll
+            </Text>
+          </TouchableOpacity>
+        </Animated.View>
       </Animated.View>
     );
   }
