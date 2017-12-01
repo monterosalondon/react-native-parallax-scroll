@@ -89,6 +89,9 @@ The `ParallaxScroll` component adds a few additional properties, as described be
 
 All changes [here](./CHANGELOG.md)
 
+### 1.5.1 - 2017-12-01
+#### Fixed
+- Header interpolation when parallxHeight === headerHeight
 ### 1.5.0 - 2017-11-06
 #### Added
 - onHeaderFixed - A callback function that is invoked when the header will attach to the top
