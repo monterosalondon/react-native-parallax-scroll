@@ -310,11 +310,15 @@ export default class ParallaxScroll extends PureComponent {
     };
 
     if (!isHeaderFixed) {
+      const parallaxHeightWithoutHeader = parallaxHeight - height;
+
       style.transform = [
         {
           translateY: this.scrollY.interpolate({
-            inputRange: [0, parallaxHeight - height, parallaxHeight],
-            outputRange: [0, 0, -height],
+            inputRange: parallaxHeightWithoutHeader
+              ? [0, parallaxHeight - height, parallaxHeight]
+              : [0, parallaxHeight],
+            outputRange: parallaxHeightWithoutHeader ? [0, 0, -height] : [0, -height],
             extrapolate: 'clamp',
           }),
         },
