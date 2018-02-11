@@ -89,6 +89,10 @@ export default class ParallaxScroll extends PureComponent {
   constructor(props) {
     super(props);
 
+    if (Animated.ScrollView !== props.scrollableComponent) {
+      this.ScrollableComponent = Animated.createAnimatedComponent(props.scrollableComponent);
+    }
+
     this._onAnimatedScroll = Animated.event(
       [{ nativeEvent: { contentOffset: { y: this.scrollY } } }],
       {
@@ -98,79 +102,76 @@ export default class ParallaxScroll extends PureComponent {
     );
   }
 
-  render() {
+  // eslint-disable-next-line
+  _getFlatData(data) {
+    return [{ key: KEY }, ...data];
+  }
+
+  // eslint-disable-next-line
+  _getDataSource(dataSource) {
+    return dataSource.cloneWithRowsAndSections({
+      [KEY]: [''],
+      ...dataSource._dataBlob,
+    });
+  }
+
+  _getSectionData(sections) {
+    if (this.props.renderItem) {
+      return [{ data: [{ key: KEY }], key: KEY }, ...sections];
+    }
+
+    return [{ data: [{ key: KEY }], key: KEY, renderItem: this._renderEmptyView }, ...sections];
+  }
+
+  _onScroll = e => {
+    const contentOffsetY = e.nativeEvent.contentOffset.y;
     const {
-      data,
-      style: wrapperStyle,
-      width,
-      height,
-      sections,
-      children,
-      renderRow,
-      renderItem,
-      dataSource,
-      scrollStyle,
+      onScroll,
       renderHeader,
-      useNativeDriver,
-      contentContainerStyle,
-      renderParallaxBackground,
-      renderParallaxForeground,
-      ...scrollViewProps
+      headerHeight,
+      isHeaderFixed,
+      onHeaderFixed,
+      parallaxHeight,
+      headerFixedTransformY,
+      onChangeHeaderVisibility,
     } = this.props;
 
-    const style = [scrollStyle, { width, height }];
-    const stickyHeaderIndices = [];
-    const isRenderChildComponents =
-      !(data && renderItem) &&
-      !((sections && renderItem) || (sections && sections[0].renderItem)) &&
-      !(dataSource && renderRow);
+    const isHeaderFixedAfterScroll =
+      contentOffsetY > parallaxHeight - headerHeight + headerFixedTransformY;
+    const isHeaderVisibibleAfterScroll = contentOffsetY < parallaxHeight;
 
-    let ScrollableComponent = this.props.scrollableComponent;
-
-    if (isRenderChildComponents && renderParallaxForeground) {
-      stickyHeaderIndices.push(stickyHeaderIndices.length);
+    if (onScroll) {
+      onScroll(e);
     }
 
-    if (Animated.ScrollView !== ScrollableComponent) {
-      ScrollableComponent = Animated.createAnimatedComponent(ScrollableComponent);
+    if (renderHeader && isHeaderFixed && this.isHeaderFixed !== isHeaderFixedAfterScroll) {
+      this.isHeaderFixed = isHeaderFixedAfterScroll;
+      onHeaderFixed(isHeaderFixedAfterScroll);
     }
 
-    return (
-      <View style={[wrapperStyle, { width, height }]} onLayout={this._onLayout}>
+    if (renderHeader && !isHeaderFixed && this.isHeaderVisibible !== isHeaderVisibibleAfterScroll) {
+      this.isHeaderVisibible = isHeaderVisibibleAfterScroll;
+      onChangeHeaderVisibility(isHeaderVisibibleAfterScroll);
+    }
+  };
 
-        {renderParallaxBackground && this._renderParallaxBackground(!!renderHeader)}
+  _renderRow = (rowData, sectionID, rowID, highlightRow) => {
+    if (sectionID === KEY) {
+      return this._renderEmptyView();
+    }
 
-        <ScrollableComponent
-          {...scrollViewProps}
-          ref={this._ref}
-          data={data && renderItem && this._getFlatData(data)}
-          style={style}
-          throttle={16}
-          onScroll={this._onAnimatedScroll}
-          sections={sections && this._getSectionData(sections)}
-          renderRow={dataSource && renderRow && this._renderRow}
-          renderItem={renderItem && this._renderItem}
-          dataSource={dataSource && renderRow && this._getDataSource(dataSource)}
-          scrollEventThrottle={16}
-          stickyHeaderIndices={stickyHeaderIndices}
-          contentContainerStyle={[contentContainerStyle, { width, minHeight: height }]}
-          stickySectionHeadersEnabled
-          onMoveShouldSetResponder={() => false}
-          onStartShouldSetResponderCapture={() => false}
-        >
-          {isRenderChildComponents && renderParallaxForeground && this._renderParallaxForeground()}
+    return this.props.renderRow(rowData, sectionID, rowID, highlightRow);
+  };
 
-          {isRenderChildComponents && this._renderEmptyView()}
+  _renderItem = e => {
+    if (e.item.key === KEY) {
+      return this._renderEmptyView();
+    }
 
-          {isRenderChildComponents && children}
-        </ScrollableComponent>
+    return this.props.renderItem(e);
+  };
 
-        {!isRenderChildComponents && renderParallaxForeground && this._renderParallaxForeground()}
-
-        {renderHeader && this._renderHeader()}
-      </View>
-    );
-  }
+  _renderEmptyView = () => <View style={{ height: this.props.parallaxHeight }} />;
 
   _ref = ref => {
     if (typeof this.props.innerRef === 'function' && ref && ref._component) {
@@ -358,74 +359,71 @@ export default class ParallaxScroll extends PureComponent {
     );
   }
 
-  // eslint-disable-next-line
-  _getFlatData(data) {
-    return [{ key: KEY }, ...data];
-  }
-
-  // eslint-disable-next-line
-  _getDataSource(dataSource) {
-    return dataSource.cloneWithRowsAndSections({
-      [KEY]: [''],
-      ...dataSource._dataBlob,
-    });
-  }
-
-  _getSectionData(sections) {
-    if (this.props.renderItem) {
-      return [{ data: [{ key: KEY }], key: KEY }, ...sections];
-    }
-
-    return [{ data: [{ key: KEY }], key: KEY, renderItem: this._renderEmptyView }, ...sections];
-  }
-
-  _renderRow = (rowData, sectionID, rowID, highlightRow) => {
-    if (sectionID === KEY) {
-      return this._renderEmptyView();
-    }
-
-    return this.props.renderRow(rowData, sectionID, rowID, highlightRow);
-  };
-
-  _renderItem = e => {
-    if (e.item.key === KEY) {
-      return this._renderEmptyView();
-    }
-
-    return this.props.renderItem(e);
-  };
-
-  _renderEmptyView = () => <View style={{ height: this.props.parallaxHeight }} />;
-
-  _onScroll = e => {
-    const contentOffsetY = e.nativeEvent.contentOffset.y;
+  render() {
     const {
-      onScroll,
+      data,
+      style: wrapperStyle,
+      width,
+      height,
+      sections,
+      children,
+      renderRow,
+      renderItem,
+      dataSource,
+      scrollStyle,
       renderHeader,
-      headerHeight,
-      isHeaderFixed,
-      onHeaderFixed,
-      parallaxHeight,
-      headerFixedTransformY,
-      onChangeHeaderVisibility,
+      useNativeDriver,
+      contentContainerStyle,
+      renderParallaxBackground,
+      renderParallaxForeground,
+      ...scrollViewProps
     } = this.props;
 
-    const isHeaderFixedAfterScroll =
-      contentOffsetY > parallaxHeight - headerHeight + headerFixedTransformY;
-    const isHeaderVisibibleAfterScroll = contentOffsetY < parallaxHeight;
+    const style = [scrollStyle, { width, height }];
+    const stickyHeaderIndices = [];
+    const isRenderChildComponents =
+      !(data && renderItem) &&
+      !((sections && renderItem) || (sections && sections[0].renderItem)) &&
+      !(dataSource && renderRow);
 
-    if (onScroll) {
-      onScroll(e);
+    if (isRenderChildComponents && renderParallaxForeground) {
+      stickyHeaderIndices.push(stickyHeaderIndices.length);
     }
 
-    if (renderHeader && isHeaderFixed && this.isHeaderFixed !== isHeaderFixedAfterScroll) {
-      this.isHeaderFixed = isHeaderFixedAfterScroll;
-      onHeaderFixed(isHeaderFixedAfterScroll);
-    }
+    return (
+      <View style={[wrapperStyle, { width, height }]} onLayout={this._onLayout}>
 
-    if (renderHeader && !isHeaderFixed && this.isHeaderVisibible !== isHeaderVisibibleAfterScroll) {
-      this.isHeaderVisibible = isHeaderVisibibleAfterScroll;
-      onChangeHeaderVisibility(isHeaderVisibibleAfterScroll);
-    }
-  };
+        {renderParallaxBackground && this._renderParallaxBackground(!!renderHeader)}
+
+        <this.ScrollableComponent
+          {...scrollViewProps}
+          ref={this._ref}
+          data={data && renderItem && this._getFlatData(data)}
+          style={style}
+          throttle={16}
+          onScroll={this._onAnimatedScroll}
+          sections={sections && this._getSectionData(sections)}
+          renderRow={dataSource && renderRow && this._renderRow}
+          renderItem={renderItem && this._renderItem}
+          dataSource={dataSource && renderRow && this._getDataSource(dataSource)}
+          scrollEventThrottle={16}
+          stickyHeaderIndices={stickyHeaderIndices}
+          contentContainerStyle={[contentContainerStyle, { width, minHeight: height }]}
+          stickySectionHeadersEnabled
+          onMoveShouldSetResponder={() => false}
+          onStartShouldSetResponderCapture={() => false}
+        >
+          {isRenderChildComponents && renderParallaxForeground && this._renderParallaxForeground()}
+
+          {isRenderChildComponents && this._renderEmptyView()}
+
+          {isRenderChildComponents && children}
+        </this.ScrollableComponent>
+
+        {!isRenderChildComponents && renderParallaxForeground && this._renderParallaxForeground()}
+
+        {renderHeader && this._renderHeader()}
+      </View>
+    );
+  }
 }
