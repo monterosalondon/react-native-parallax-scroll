@@ -11,6 +11,7 @@ import Header from './Header';
 import Welcome from './Welcome';
 import Foreground from './Foreground';
 import Background from './Background';
+import DynamicFlatList from './DynamicFlatList';
 import FixedChildrenExample from './FixedChildrenExample';
 
 const window = Dimensions.get('window');
@@ -23,7 +24,7 @@ const getBackground = () =>
 const getForeground = () => <Foreground onPress={action('onPress Foreground')} />;
 
 const getLightbox = () =>
-  (<Lightbox>
+  <Lightbox>
     <Image
       style={{
         width: window.width,
@@ -32,7 +33,7 @@ const getLightbox = () =>
       }}
       source={{ uri: `https://lorempixel.com/600/400/nightlife/?date=${Date.now()}` }}
     />
-  </Lightbox>);
+  </Lightbox>;
 
 const dateSource = new ListView.DataSource({
   rowHasChanged: (r1, r2) => r1 !== r2,
@@ -45,7 +46,7 @@ const style = { backgroundColor: '#000' };
 storiesOf('ParallaxScroll', module)
   .addDecorator(withKnobs)
   .add('with bacground', () =>
-    (<ParallaxScroll
+    <ParallaxScroll
       style={style}
       onHeaderFixed={action('onHeaderFixed')}
       parallaxHeight={number('Parallax height', 250)}
@@ -57,10 +58,10 @@ storiesOf('ParallaxScroll', module)
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
     >
       <Welcome repeat={number('Repeat text times', 5)} />
-    </ParallaxScroll>),
+    </ParallaxScroll>
   )
   .add('with header', () =>
-    (<ParallaxScroll
+    <ParallaxScroll
       style={style}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
       headerHeight={number('Header height', 50)}
@@ -77,10 +78,10 @@ storiesOf('ParallaxScroll', module)
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
     >
       <Welcome repeat={number('Repeat text times', 5)} />
-    </ParallaxScroll>),
+    </ParallaxScroll>
   )
   .add('without header background', () =>
-    (<ParallaxScroll
+    <ParallaxScroll
       style={style}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
       headerHeight={number('Header height', 50)}
@@ -96,10 +97,10 @@ storiesOf('ParallaxScroll', module)
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
     >
       <Welcome repeat={number('Repeat text times', 5)} />
-    </ParallaxScroll>),
+    </ParallaxScroll>
   )
   .add('with foreground', () =>
-    (<ParallaxScroll
+    <ParallaxScroll
       style={style}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
       headerHeight={number('Header height', 50)}
@@ -109,7 +110,6 @@ storiesOf('ParallaxScroll', module)
       useNativeDriver={boolean('Use native driver', false)}
       isBackgroundScalable={boolean('Is background scalable', true)}
       headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 0)')}
-      isForegroundTouchable={boolean('Is foreground touchable', false)}
       onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
       renderParallaxBackground={getBackground}
       fadeOutParallaxBackground={boolean('Fade out background', false)}
@@ -120,14 +120,13 @@ storiesOf('ParallaxScroll', module)
       parallaxForegroundScrollSpeed={number('Foreground scroll speed', 2.5)}
     >
       <Welcome repeat={number('Repeat text times', 5)} />
-    </ParallaxScroll>),
+    </ParallaxScroll>
   )
   .add('with native driver', () =>
-    (<ParallaxScroll
+    <ParallaxScroll
       style={style}
       renderHeader={({ animatedValue }) =>
-        <Header onPress={action('onPress Header')} useBg animatedValue={animatedValue} />
-      }
+        <Header onPress={action('onPress Header')} useBg animatedValue={animatedValue} />}
       headerHeight={number('Header height', 90)}
       isHeaderFixed={boolean('Is header fixed', true)}
       onHeaderFixed={action('onHeaderFixed')}
@@ -136,7 +135,6 @@ storiesOf('ParallaxScroll', module)
       isBackgroundScalable={boolean('Is background scalable', true)}
       headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 0)')}
       headerFixedTransformY={text('Header fixed transform y', 30)}
-      isForegroundTouchable={boolean('Is foreground touchable', false)}
       renderParallaxBackground={getBackground}
       onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
       renderParallaxForeground={getForeground}
@@ -147,10 +145,10 @@ storiesOf('ParallaxScroll', module)
       parallaxForegroundScrollSpeed={number('Foreground scroll speed', 2.5)}
     >
       <Welcome repeat={number('Repeat text times', 5)} />
-    </ParallaxScroll>),
+    </ParallaxScroll>
   )
   .add('with lightbox', () =>
-    (<ParallaxScroll
+    <ParallaxScroll
       style={style}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
       headerHeight={number('Header height', 50)}
@@ -160,7 +158,6 @@ storiesOf('ParallaxScroll', module)
       useNativeDriver={boolean('Use native driver', true)}
       isBackgroundScalable={boolean('Is background scalable', true)}
       headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 1)')}
-      isForegroundTouchable={boolean('Is foreground touchable', true)}
       onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
       fadeOutParallaxBackground={boolean('Fade out background', false)}
       renderParallaxForeground={getLightbox}
@@ -170,10 +167,10 @@ storiesOf('ParallaxScroll', module)
       parallaxForegroundScrollSpeed={number('Foreground scroll speed', 2.5)}
     >
       <Welcome repeat={number('Repeat text times', 5)} />
-    </ParallaxScroll>),
+    </ParallaxScroll>
   )
   .add('with innerRef and scrollTo', () =>
-    (<ParallaxScroll
+    <ParallaxScroll
       style={style}
       innerRef={instance => (innerRef = instance)}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
@@ -184,7 +181,6 @@ storiesOf('ParallaxScroll', module)
       useNativeDriver={boolean('Use native driver', true)}
       isBackgroundScalable={boolean('Is background scalable', true)}
       headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 0)')}
-      isForegroundTouchable={boolean('Is foreground touchable', false)}
       onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
       renderParallaxBackground={getBackground}
       fadeOutParallaxBackground={boolean('Fade out background', false)}
@@ -198,10 +194,10 @@ storiesOf('ParallaxScroll', module)
       <TouchableOpacity onPress={() => innerRef.scrollTo({ x: 0, y: 0, animated: true })}>
         <Welcome repeat={number('Repeat text times', 1)} />
       </TouchableOpacity>
-    </ParallaxScroll>),
+    </ParallaxScroll>
   )
   .add('List view', () =>
-    (<ParallaxScroll
+    <ParallaxScroll
       style={style}
       dataSource={dateSource.cloneWithRows([1, 2, 3, 4, 5])}
       renderRow={item => <Welcome repeat={item} />}
@@ -214,7 +210,6 @@ storiesOf('ParallaxScroll', module)
       scrollableComponent={ListView}
       isBackgroundScalable={boolean('Is background scalable', true)}
       headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 1)')}
-      isForegroundTouchable={boolean('Is foreground touchable', false)}
       onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
       renderParallaxBackground={getBackground}
       fadeOutParallaxBackground={boolean('Fade out background', false)}
@@ -223,10 +218,10 @@ storiesOf('ParallaxScroll', module)
       headerFixedBackgroundColor={text('Header fixed bacground color', 'rgba(51, 51, 51, 1)')}
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
       parallaxForegroundScrollSpeed={number('Foreground scroll speed', 2.5)}
-    />),
+    />
   )
   .add('Flat list', () =>
-    (<ParallaxScroll
+    <ParallaxScroll
       style={style}
       data={[{ key: 1 }, { key: 2 }, { key: 3 }, { key: 4 }, { key: 5 }, { key: 6 }, { key: 7 }]}
       renderItem={({ item: { key } }) => <Welcome repeat={key} />}
@@ -239,7 +234,6 @@ storiesOf('ParallaxScroll', module)
       scrollableComponent={FlatList}
       isBackgroundScalable={boolean('Is background scalable', true)}
       headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 1)')}
-      isForegroundTouchable={boolean('Is foreground touchable', false)}
       onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
       renderParallaxBackground={getBackground}
       fadeOutParallaxBackground={boolean('Fade out background', false)}
@@ -248,10 +242,11 @@ storiesOf('ParallaxScroll', module)
       headerFixedBackgroundColor={text('Header fixed bacground color', 'rgba(51, 51, 51, 1)')}
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
       parallaxForegroundScrollSpeed={number('Foreground scroll speed', 2.5)}
-    />),
+    />
   )
+  .add('Flat list with dynamic data', () => <DynamicFlatList />)
   .add('Section list homogenous', () =>
-    (<ParallaxScroll
+    <ParallaxScroll
       style={style}
       sections={[
         { data: [{ key: 1 }], key: 1 },
@@ -269,7 +264,6 @@ storiesOf('ParallaxScroll', module)
       scrollableComponent={SectionList}
       isBackgroundScalable={boolean('Is background scalable', true)}
       headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 1)')}
-      isForegroundTouchable={boolean('Is foreground touchable', false)}
       onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
       renderParallaxBackground={getBackground}
       fadeOutParallaxBackground={boolean('Fade out background', false)}
@@ -278,10 +272,10 @@ storiesOf('ParallaxScroll', module)
       headerFixedBackgroundColor={text('Header fixed bacground color', 'rgba(51, 51, 51, 1)')}
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
       parallaxForegroundScrollSpeed={number('Foreground scroll speed', 2.5)}
-    />),
+    />
   )
   .add('Section list heterogeneous', () =>
-    (<ParallaxScroll
+    <ParallaxScroll
       style={style}
       sections={[
         { data: [{ key: 1 }], key: 1, renderItem: ({ item: { key } }) => <Welcome repeat={key} /> },
@@ -299,7 +293,6 @@ storiesOf('ParallaxScroll', module)
       scrollableComponent={SectionList}
       isBackgroundScalable={boolean('Is background scalable', true)}
       headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 0)')}
-      isForegroundTouchable={boolean('Is foreground touchable', false)}
       onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
       renderParallaxBackground={getBackground}
       fadeOutParallaxBackground={boolean('Fade out background', false)}
@@ -308,6 +301,6 @@ storiesOf('ParallaxScroll', module)
       headerFixedBackgroundColor={text('Header fixed bacground color', 'rgba(51, 51, 51, 1)')}
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
       parallaxForegroundScrollSpeed={number('Foreground scroll speed', 2.5)}
-    />),
+    />
   )
   .add('Fixed children example', () => <FixedChildrenExample />);

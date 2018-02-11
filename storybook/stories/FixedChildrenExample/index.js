@@ -43,7 +43,6 @@ export default class FixedChildrenExample extends Component {
           isBackgroundScalable={boolean('Is background scalable', true)}
           headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 0)')}
           headerFixedTransformY={text('Header fixed transform y', 30)}
-          isForegroundTouchable={boolean('Is foreground touchable', false)}
           renderParallaxBackground={() =>
             <Background source={{ uri: `https://lorempixel.com/600/400/nightlife/?date=${Date.now()}` }} />
           }
