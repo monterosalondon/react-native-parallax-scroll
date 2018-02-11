@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-### 1.5.2 - 2017-12-01
+### 1.5.2 - 2018-02-11
 
 #### Fixed
 

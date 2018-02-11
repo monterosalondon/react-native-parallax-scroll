@@ -89,7 +89,7 @@ The `ParallaxScroll` component adds a few additional properties, as described be
 
 All changes [here](./CHANGELOG.md)
 
-### 1.5.2 - 2017-12-01
+### 1.5.2 - 2018-02-11
 
 #### Fixed
 
