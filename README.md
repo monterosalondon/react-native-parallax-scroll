@@ -4,11 +4,11 @@
 
 A `ScrollView`-like component that:
 
-- Has a parallax background
-- Has a parallax foreground
-- Has a fixed or sticky header
-- Can be nested within other views(FlatList, SectionList)
-- Works on iOS and Android
+* Has a parallax background
+* Has a parallax foreground
+* Has a fixed or sticky header
+* Can be nested within other views(FlatList, SectionList)
+* Works on iOS and Android
 
 ## Installation
 
@@ -17,10 +17,11 @@ $ npm install @monterosa/react-native-parallax-scroll --save
 ```
 
 ## Demo
+
 YouTube - https://www.youtube.com/watch?v=zM4koduK32Y
 
 | ![](./demo/ios-demo-1.gif) | ![](./demo/ios-demo-2.gif) |
- ![](./demo/ios-demo-3.gif) | ![](./demo/demo-1.gif) | ![](./demo/demo-2.gif) |
+![](./demo/ios-demo-3.gif) | ![](./demo/demo-1.gif) | ![](./demo/demo-2.gif) |
 
 ## Basic Usage
 
@@ -57,45 +58,56 @@ All of the properties of `ScrollView` are supported. Please refer to the
 
 The `ParallaxScroll` component adds a few additional properties, as described below.
 
-| Property | Type | Defaut | Description |
-| -------- | ---- | -------- | ----------- |
-| `style` | `object` | `{}` | Component's styles
-| `width` | `number` | `Dimensions.get('window').width` | Component's width. |
-| `height` | `number` | `Dimensions.get('window').height` | Component's height. |
-| `innerRef` | `func` | `null` | To get a reference to the scrollable component. |
-| `scrollStyle` | `object` | `{}` | These styles will be applied to the scroll view. |
-| `headerHeight` | `number` | `45` | This is the height of sticky(fixed) header. |
-| `renderHeader` | `({ width, height, animatedValue }) => {}` | `null` | This renders an optional sticky(fixed) header that will be visible to the top of the view. |
-| `onHeaderFixed` | `func` | `null` | A callback function that is invoked when the header will attach to the top. |
-| `isHeaderFixed` | `bool` | `false` | Is header fixed to top(not sticky)? |
-| `parallaxHeight` | `number` | `Dimensions.get('window').width * 9 / 16` | This is the height of parallax. |
-| `useNativeDriver` | `bool` | `false` | Enable [Native driver](https://facebook.github.io/react-native/blog/2017/02/14/using-native-driver-for-animated.html) for animated. NOTE: Works only with `Animated.ScrollView` component. |
-| `scrollableComponent` | `class` | `Animated.ScrollView` | This is a class of scrollable component. |
-| `isBackgroundScalable` | `bool` | `true` | Is background scalable on iOS? |
-| `headerBackgroundColor` | `string` | `rgba(0, 0, 0, 0)` | The color of the unsticked(unfixed) header background. Can be empty `''` string. NOTE: Dosen't work with useNativeDriver.|
-| `contentContainerStyle` | `object` | `{}` | These styles will be applied to the scroll view content container which wraps all of the child views. |
-| `headerFixedTransformY` | `number` | `0` | This number indicating how much the fixed header should move upwards during the scroll. Used as the hack to change fixed header height during scroll. |
-| `onChangeHeaderVisibility` | `func` | `null` | A callback function that is invoked when the parallax header is hidden or shown (as the user is scrolling). Function is called with a `boolean` value to indicate whether header is visible or not. |
-| `renderParallaxBackground` | `({ width, height, animatedValue }) => {}` | `null` | This renders the background of the parallax. |
-| `renderParallaxForeground` | `({ width, height, animatedValue }) => {}` | `null` | This renders the foreground of the parallax. |
-| `fadeOutParallaxBackground` | `bool` | `false` | If `true`, the background will fade out as the user scrolls up. |
-| `fadeOutParallaxForeground` | `bool` | `false` | If `true`, the foreground will fade out as the user scrolls up. |
-| `headerFixedBackgroundColor` | `string` | `rgba(0, 0, 0, 1)` | The color of the sticked(fixed) header background. |
-| `parallaxBackgroundScrollSpeed` | `number` | `5` | The speed factor that the background moves at relative to the scroll content. |
-| `parallaxForegroundScrollSpeed` | `number` | `5` | The speed factor that the foreground moves at relative to the scroll content. |
-
+| Property                        | Type                                       | Defaut                                    | Description                                                                                                                                                                                         |
+| ------------------------------- | ------------------------------------------ | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `style`                         | `object`                                   | `{}`                                      | Component's styles                                                                                                                                                                                  |
+| `width`                         | `number`                                   | `Dimensions.get('window').width`          | Component's width.                                                                                                                                                                                  |
+| `height`                        | `number`                                   | `Dimensions.get('window').height`         | Component's height.                                                                                                                                                                                 |
+| `innerRef`                      | `func`                                     | `null`                                    | To get a reference to the scrollable component.                                                                                                                                                     |
+| `scrollStyle`                   | `object`                                   | `{}`                                      | These styles will be applied to the scroll view.                                                                                                                                                    |
+| `headerHeight`                  | `number`                                   | `45`                                      | This is the height of sticky(fixed) header.                                                                                                                                                         |
+| `renderHeader`                  | `({ width, height, animatedValue }) => {}` | `null`                                    | This renders an optional sticky(fixed) header that will be visible to the top of the view.                                                                                                          |
+| `onHeaderFixed`                 | `func`                                     | `null`                                    | A callback function that is invoked when the header will attach to the top.                                                                                                                         |
+| `isHeaderFixed`                 | `bool`                                     | `false`                                   | Is header fixed to top(not sticky)?                                                                                                                                                                 |
+| `parallaxHeight`                | `number`                                   | `Dimensions.get('window').width * 9 / 16` | This is the height of parallax.                                                                                                                                                                     |
+| `useNativeDriver`               | `bool`                                     | `false`                                   | Enable [Native driver](https://facebook.github.io/react-native/blog/2017/02/14/using-native-driver-for-animated.html) for animated. NOTE: Works only with `Animated.ScrollView` component.          |
+| `scrollableComponent`           | `class`                                    | `Animated.ScrollView`                     | This is a class of scrollable component.                                                                                                                                                            |
+| `isBackgroundScalable`          | `bool`                                     | `true`                                    | Is background scalable on iOS?                                                                                                                                                                      |
+| `headerBackgroundColor`         | `string`                                   | `rgba(0, 0, 0, 0)`                        | The color of the unsticked(unfixed) header background. Can be empty `''` string. NOTE: Dosen't work with useNativeDriver.                                                                           |
+| `contentContainerStyle`         | `object`                                   | `{}`                                      | These styles will be applied to the scroll view content container which wraps all of the child views.                                                                                               |
+| `headerFixedTransformY`         | `number`                                   | `0`                                       | This number indicating how much the fixed header should move upwards during the scroll. Used as the hack to change fixed header height during scroll.                                               |
+| `onChangeHeaderVisibility`      | `func`                                     | `null`                                    | A callback function that is invoked when the parallax header is hidden or shown (as the user is scrolling). Function is called with a `boolean` value to indicate whether header is visible or not. |
+| `renderParallaxBackground`      | `({ width, height, animatedValue }) => {}` | `null`                                    | This renders the background of the parallax.                                                                                                                                                        |
+| `renderParallaxForeground`      | `({ width, height, animatedValue }) => {}` | `null`                                    | This renders the foreground of the parallax.                                                                                                                                                        |
+| `fadeOutParallaxBackground`     | `bool`                                     | `false`                                   | If `true`, the background will fade out as the user scrolls up.                                                                                                                                     |
+| `fadeOutParallaxForeground`     | `bool`                                     | `false`                                   | If `true`, the foreground will fade out as the user scrolls up.                                                                                                                                     |
+| `headerFixedBackgroundColor`    | `string`                                   | `rgba(0, 0, 0, 1)`                        | The color of the sticked(fixed) header background.                                                                                                                                                  |
+| `parallaxBackgroundScrollSpeed` | `number`                                   | `5`                                       | The speed factor that the background moves at relative to the scroll content.                                                                                                                       |
+| `parallaxForegroundScrollSpeed` | `number`                                   | `5`                                       | The speed factor that the foreground moves at relative to the scroll content.                                                                                                                       |
 
 ## Latest changelog
 
 All changes [here](./CHANGELOG.md)
 
-### 1.5.1 - 2017-12-01
+### 1.5.2 - 2017-12-01
+
 #### Fixed
-- Header interpolation when parallxHeight === headerHeight
+
+* issue #15 - scroll to top if scrollableComponent is not Animatable
+
+### 1.5.1 - 2017-12-01
+
+#### Fixed
+
+* Header interpolation when parallxHeight === headerHeight
+
 ### 1.5.0 - 2017-11-06
+
 #### Added
-- onHeaderFixed - A callback function that is invoked when the header will attach to the top
-- headerFixedTransformY - This number indicating how much the fixed header should move upwards during the scroll. Used as the hack to change fixed header height during scroll
+
+* onHeaderFixed - A callback function that is invoked when the header will attach to the top
+
+* headerFixedTransformY - This number indicating how much the fixed header should move upwards during the scroll. Used as the hack to change fixed header height during scroll
 
 ## Contributing
 
