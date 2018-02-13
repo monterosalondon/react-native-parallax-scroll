@@ -89,6 +89,12 @@ The `ParallaxScroll` component adds a few additional properties, as described be
 
 All changes [here](./CHANGELOG.md)
 
+### 1.5.3 - 2018-02-1
+
+#### Fixed
+
+* issues #17, #18 - fatal error when `scrollableComponent` prop is missing
+
 ### 1.5.2 - 2018-02-11
 
 #### Fixed
@@ -100,14 +106,6 @@ All changes [here](./CHANGELOG.md)
 #### Fixed
 
 * Header interpolation when parallxHeight === headerHeight
-
-### 1.5.0 - 2017-11-06
-
-#### Added
-
-* onHeaderFixed - A callback function that is invoked when the header will attach to the top
-
-* headerFixedTransformY - This number indicating how much the fixed header should move upwards during the scroll. Used as the hack to change fixed header height during scroll
 
 ## Contributing
 

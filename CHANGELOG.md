@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+### 1.5.3 - 2018-02-1
+
+#### Fixed
+
+* issues #17, #18 - fatal error when `scrollableComponent` prop is missing
+
 ### 1.5.2 - 2018-02-11
 
 #### Fixed
