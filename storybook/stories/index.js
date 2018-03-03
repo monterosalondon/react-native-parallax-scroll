@@ -18,25 +18,27 @@ const window = Dimensions.get('window');
 
 const RATIO = 9 / 16;
 
-const getBackground = () =>
-  <Background source={{ uri: `https://lorempixel.com/600/400/nightlife/?date=${Date.now()}` }} />;
+const getBackground = () => (
+  <Background source={{ uri: `https://lorempixel.com/600/400/nightlife/?date=${Date.now()}` }} />
+);
 
 const getForeground = () => <Foreground onPress={action('onPress Foreground')} />;
 
-const getLightbox = () =>
+const getLightbox = () => (
   <Lightbox>
     <Image
       style={{
         width: window.width,
         height: window.width * RATIO + 45,
-        position: 'relative',
+        position: 'relative'
       }}
       source={{ uri: `https://lorempixel.com/600/400/nightlife/?date=${Date.now()}` }}
     />
-  </Lightbox>;
+  </Lightbox>
+);
 
 const dateSource = new ListView.DataSource({
-  rowHasChanged: (r1, r2) => r1 !== r2,
+  rowHasChanged: (r1, r2) => r1 !== r2
 });
 
 let innerRef;
@@ -45,7 +47,7 @@ const style = { backgroundColor: '#000' };
 
 storiesOf('ParallaxScroll', module)
   .addDecorator(withKnobs)
-  .add('with bacground', () =>
+  .add('with bacground', () => (
     <ParallaxScroll
       style={style}
       onHeaderFixed={action('onHeaderFixed')}
@@ -59,8 +61,8 @@ storiesOf('ParallaxScroll', module)
     >
       <Welcome repeat={number('Repeat text times', 5)} />
     </ParallaxScroll>
-  )
-  .add('with header', () =>
+  ))
+  .add('with header', () => (
     <ParallaxScroll
       style={style}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
@@ -79,8 +81,8 @@ storiesOf('ParallaxScroll', module)
     >
       <Welcome repeat={number('Repeat text times', 5)} />
     </ParallaxScroll>
-  )
-  .add('without header background', () =>
+  ))
+  .add('without header background', () => (
     <ParallaxScroll
       style={style}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
@@ -98,8 +100,8 @@ storiesOf('ParallaxScroll', module)
     >
       <Welcome repeat={number('Repeat text times', 5)} />
     </ParallaxScroll>
-  )
-  .add('with foreground', () =>
+  ))
+  .add('with foreground', () => (
     <ParallaxScroll
       style={style}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
@@ -121,12 +123,11 @@ storiesOf('ParallaxScroll', module)
     >
       <Welcome repeat={number('Repeat text times', 5)} />
     </ParallaxScroll>
-  )
-  .add('with native driver', () =>
+  ))
+  .add('with native driver', () => (
     <ParallaxScroll
       style={style}
-      renderHeader={({ animatedValue }) =>
-        <Header onPress={action('onPress Header')} useBg animatedValue={animatedValue} />}
+      renderHeader={() => <Header onPress={action('onPress Header')} />}
       headerHeight={number('Header height', 90)}
       isHeaderFixed={boolean('Is header fixed', true)}
       onHeaderFixed={action('onHeaderFixed')}
@@ -146,8 +147,38 @@ storiesOf('ParallaxScroll', module)
     >
       <Welcome repeat={number('Repeat text times', 5)} />
     </ParallaxScroll>
-  )
-  .add('with lightbox', () =>
+  ))
+  .add('with avatar', () => (
+    <ParallaxScroll
+      style={style}
+      renderHeader={({ height, animatedValue }) => (
+        <Header
+          onPress={action('onPress Header')}
+          height={height}
+          withAvatar
+          animatedValue={animatedValue}
+        />
+      )}
+      headerHeight={number('Header height', 250)}
+      isHeaderFixed={boolean('Is header fixed', true)}
+      onHeaderFixed={action('onHeaderFixed')}
+      parallaxHeight={number('Parallax height', 250)}
+      useNativeDriver={boolean('Use native driver', true)}
+      isBackgroundScalable={boolean('Is background scalable', true)}
+      headerBackgroundColor={text('Header bacground color', 'transparent')}
+      headerFixedTransformY={text('Header fixed transform y', 170)}
+      renderParallaxBackground={getBackground}
+      onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
+      fadeOutParallaxBackground={boolean('Fade out background', false)}
+      fadeOutParallaxForeground={boolean('Fade out foreground', true)}
+      headerFixedBackgroundColor={text('Header fixed bacground color', 'transparent')}
+      parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
+      parallaxForegroundScrollSpeed={number('Foreground scroll speed', 2.5)}
+    >
+      <Welcome repeat={number('Repeat text times', 5)} />
+    </ParallaxScroll>
+  ))
+  .add('with lightbox', () => (
     <ParallaxScroll
       style={style}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
@@ -168,8 +199,8 @@ storiesOf('ParallaxScroll', module)
     >
       <Welcome repeat={number('Repeat text times', 5)} />
     </ParallaxScroll>
-  )
-  .add('with innerRef and scrollTo', () =>
+  ))
+  .add('with innerRef and scrollTo', () => (
     <ParallaxScroll
       style={style}
       innerRef={instance => (innerRef = instance)}
@@ -195,8 +226,8 @@ storiesOf('ParallaxScroll', module)
         <Welcome repeat={number('Repeat text times', 1)} />
       </TouchableOpacity>
     </ParallaxScroll>
-  )
-  .add('List view', () =>
+  ))
+  .add('List view', () => (
     <ParallaxScroll
       style={style}
       dataSource={dateSource.cloneWithRows([1, 2, 3, 4, 5])}
@@ -219,8 +250,8 @@ storiesOf('ParallaxScroll', module)
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
       parallaxForegroundScrollSpeed={number('Foreground scroll speed', 2.5)}
     />
-  )
-  .add('Flat list', () =>
+  ))
+  .add('Flat list', () => (
     <ParallaxScroll
       style={style}
       data={[{ key: 1 }, { key: 2 }, { key: 3 }, { key: 4 }, { key: 5 }, { key: 6 }, { key: 7 }]}
@@ -243,16 +274,16 @@ storiesOf('ParallaxScroll', module)
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
       parallaxForegroundScrollSpeed={number('Foreground scroll speed', 2.5)}
     />
-  )
+  ))
   .add('Flat list with dynamic data', () => <DynamicFlatList />)
-  .add('Section list homogenous', () =>
+  .add('Section list homogenous', () => (
     <ParallaxScroll
       style={style}
       sections={[
         { data: [{ key: 1 }], key: 1 },
         { data: [{ key: 2 }], key: 2 },
         { data: [{ key: 3 }], key: 3 },
-        { data: [{ key: 4 }], key: 4 },
+        { data: [{ key: 4 }], key: 4 }
       ]}
       renderItem={({ item: { key } }) => <Welcome repeat={key} />}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
@@ -273,8 +304,8 @@ storiesOf('ParallaxScroll', module)
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
       parallaxForegroundScrollSpeed={number('Foreground scroll speed', 2.5)}
     />
-  )
-  .add('Section list heterogeneous', () =>
+  ))
+  .add('Section list heterogeneous', () => (
     <ParallaxScroll
       style={style}
       sections={[
@@ -282,7 +313,7 @@ storiesOf('ParallaxScroll', module)
         { data: [{ key: 2 }], key: 2, renderItem: ({ item: { key } }) => <Welcome repeat={key} /> },
         { data: [{ key: 3 }], key: 3, renderItem: ({ item: { key } }) => <Welcome repeat={key} /> },
         { data: [{ key: 4 }], key: 4, renderItem: ({ item: { key } }) => <Welcome repeat={key} /> },
-        { data: [{ key: 5 }], key: 5, renderItem: ({ item: { key } }) => <Welcome repeat={key} /> },
+        { data: [{ key: 5 }], key: 5, renderItem: ({ item: { key } }) => <Welcome repeat={key} /> }
       ]}
       renderHeader={() => <Header onPress={action('onPress Header')} />}
       headerHeight={number('Header height', 50)}
@@ -302,5 +333,5 @@ storiesOf('ParallaxScroll', module)
       parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
       parallaxForegroundScrollSpeed={number('Foreground scroll speed', 2.5)}
     />
-  )
+  ))
   .add('Fixed children example', () => <FixedChildrenExample />);
