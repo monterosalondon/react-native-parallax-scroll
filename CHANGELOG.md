@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+### 1.5.4 - 2018-03-3
+
+#### Fixed
+
+* header translateY when header is fixed and `headerFixedTransformY` is too big
+
 ### 1.5.3 - 2018-02-1
 
 #### Fixed

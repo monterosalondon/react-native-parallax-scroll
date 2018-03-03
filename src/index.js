@@ -337,7 +337,7 @@ export default class ParallaxScroll extends PureComponent {
       style.transform = [
         {
           translateY: this.scrollY.interpolate({
-            inputRange: [0, parallaxHeight - height],
+            inputRange: [0, headerFixedTransformY],
             outputRange: [0, -headerFixedTransformY],
             extrapolate: 'clamp'
           })
