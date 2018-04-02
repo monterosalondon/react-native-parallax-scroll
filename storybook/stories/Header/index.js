@@ -12,7 +12,7 @@ export default class Header extends Component {
   };
 
   static defaultProps = {
-    height: 90,
+    height: 50,
     withAvatar: false,
     animatedValue: new Animated.Value(0)
   };
@@ -55,27 +55,7 @@ export default class Header extends Component {
     }
   };
 
-  render() {
-    const scale = this.props.animatedValue.interpolate({
-      inputRange: [0, 160],
-      outputRange: [1, 0.8],
-      extrapolateLeft: 'clamp',
-      extrapolateRight: 'clamp'
-    });
-
-    const translateY = this.props.animatedValue.interpolate({
-      inputRange: [0, 160],
-      outputRange: [0, 20],
-      extrapolateLeft: 'clamp',
-      extrapolateRight: 'clamp'
-    });
-
-    const opacity = this.props.animatedValue.interpolate({
-      inputRange: [0, this.props.height - 100],
-      outputRange: [0, 1],
-      extrapolate: 'clamp'
-    });
-
+  getAvatar() {
     const avatarScale = this.props.animatedValue.interpolate({
       inputRange: [0, this.props.height - 80],
       outputRange: [1, 0.5],
@@ -112,6 +92,67 @@ export default class Header extends Component {
       extrapolateRight: 'clamp'
     });
 
+    return (
+      <View>
+        <Animated.Image
+          style={[
+            this.styles.avatar,
+            {
+              transform: [
+                { scale: avatarScale },
+                { translateX: avatarTranslateX },
+                { translateY: avatarTranslateY }
+              ]
+            }
+          ]}
+          source={{ uri: `https://lorempixel.com/100/100/transport/?date=${Date.now()}` }}
+        />
+
+        <Animated.Text
+          style={[
+            this.styles.name,
+            {
+              transform: [
+                { scale: textScale },
+                { translateX: textTranslateX },
+                { translateY: textTranslateY }
+              ]
+            }
+          ]}
+        >
+          User Name
+        </Animated.Text>
+      </View>
+    );
+  }
+
+  render() {
+    const opacity = this.props.withAvatar
+      ? this.props.animatedValue.interpolate({
+        inputRange: [0, this.props.height - 100],
+        outputRange: [0, 1],
+        extrapolate: 'clamp'
+      })
+      : 1;
+
+    const scale = this.props.withAvatar
+      ? this.props.animatedValue.interpolate({
+        inputRange: [0, 160],
+        outputRange: [1, 0.8],
+        extrapolateLeft: 'clamp',
+        extrapolateRight: 'clamp'
+      })
+      : 1;
+
+    const translateY = this.props.withAvatar
+      ? this.props.animatedValue.interpolate({
+        inputRange: [0, 160],
+        outputRange: [0, 20],
+        extrapolateLeft: 'clamp',
+        extrapolateRight: 'clamp'
+      })
+      : 1;
+
     let wrapperStyle = {};
 
     if (this.props.withAvatar) {
@@ -127,36 +168,7 @@ export default class Header extends Component {
 
         <Animated.View style={{ transform: [{ scale }, { translateY }] }}>
           {this.props.withAvatar ? (
-            <View>
-              <Animated.Image
-                style={[
-                  this.styles.avatar,
-                  {
-                    transform: [
-                      { scale: avatarScale },
-                      { translateX: avatarTranslateX },
-                      { translateY: avatarTranslateY }
-                    ]
-                  }
-                ]}
-                source={{ uri: `https://lorempixel.com/100/100/transport/?date=${Date.now()}` }}
-              />
-
-              <Animated.Text
-                style={[
-                  this.styles.name,
-                  {
-                    transform: [
-                      { scale: textScale },
-                      { translateX: textTranslateX },
-                      { translateY: textTranslateY }
-                    ]
-                  }
-                ]}
-              >
-                User Name
-              </Animated.Text>
-            </View>
+            this.getAvatar()
           ) : (
             <TouchableOpacity onPress={this.props.onPress}>
               <Text style={this.styles.header}>Welcome to React Native Parallax Scroll</Text>

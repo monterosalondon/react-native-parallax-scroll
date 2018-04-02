@@ -65,7 +65,7 @@ storiesOf('ParallaxScroll', module)
   .add('with header', () => (
     <ParallaxScroll
       style={style}
-      renderHeader={() => <Header onPress={action('onPress Header')} />}
+      renderHeader={({ height }) => <Header height={height} onPress={action('onPress Header')} />}
       headerHeight={number('Header height', 50)}
       onHeaderFixed={action('onHeaderFixed')}
       isHeaderFixed={boolean('Is header fixed', true)}
@@ -135,7 +135,6 @@ storiesOf('ParallaxScroll', module)
       useNativeDriver={boolean('Use native driver', true)}
       isBackgroundScalable={boolean('Is background scalable', true)}
       headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 0)')}
-      headerFixedTransformY={text('Header fixed transform y', 30)}
       renderParallaxBackground={getBackground}
       onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
       renderParallaxForeground={getForeground}
