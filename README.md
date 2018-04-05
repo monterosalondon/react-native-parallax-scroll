@@ -89,23 +89,23 @@ The `ParallaxScroll` component adds a few additional properties, as described be
 
 All changes [here](./CHANGELOG.md)
 
+### 1.6.0 - 2018-04-05
+
+#### Fixed
+
+* Based on the Component, instead of PureComponent
+
 ### 1.5.4 - 2018-03-3
 
 #### Fixed
 
 * header translateY when header is fixed and `headerFixedTransformY` is too big
 
-### 1.5.3 - 2018-02-1
+### 1.5.3 - 2018-02-14
 
 #### Fixed
 
 * issues #17, #18 - fatal error when `scrollableComponent` prop is missing
-
-### 1.5.2 - 2018-02-11
-
-#### Fixed
-
-* issue #15 - scroll to top if scrollableComponent is not Animatable
 
 ## Contributing
 

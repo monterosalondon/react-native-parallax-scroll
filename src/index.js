@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { View, Animated, Dimensions, ListViewDataSource } from 'react-native';
 import PropTypes from 'prop-types';
 /* eslint-enable import/no-extraneous-dependencies */
@@ -9,7 +9,7 @@ const window = Dimensions.get('window');
 const KEY = '__PARALLAX_SCROLL__';
 const RATIO = 9 / 16;
 
-export default class ParallaxScroll extends PureComponent {
+export default class ParallaxScroll extends Component {
   static propTypes = {
     data: PropTypes.oneOfType([PropTypes.array]),
     style: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),

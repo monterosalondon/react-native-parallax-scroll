@@ -2,13 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
-### 1.5.4 - 2018-03-3
+### 1.6.0 - 2018-04-05
+
+#### Fixed
+
+* Based on the Component, instead of PureComponent
+
+### 1.5.4 - 2018-03-03
 
 #### Fixed
 
 * header translateY when header is fixed and `headerFixedTransformY` is too big
 
-### 1.5.3 - 2018-02-1
+### 1.5.3 - 2018-02-14
 
 #### Fixed
 
