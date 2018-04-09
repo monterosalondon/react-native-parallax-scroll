@@ -44,6 +44,8 @@ export default class ParallaxScroll extends Component {
     fadeOutParallaxForeground: PropTypes.bool,
     fadeOutParallaxBackground: PropTypes.bool,
     headerFixedBackgroundColor: PropTypes.string,
+    backgroundScaleOrigin: PropTypes.oneOf(['top', 'center']),
+    backgroundScale: PropTypes.number,
     parallaxBackgroundScrollSpeed: PropTypes.number,
     parallaxForegroundScrollSpeed: PropTypes.number
   };
@@ -78,6 +80,8 @@ export default class ParallaxScroll extends Component {
     fadeOutParallaxForeground: false,
     fadeOutParallaxBackground: false,
     headerFixedBackgroundColor: 'rgba(0, 0, 0, 1)',
+    backgroundScaleOrigin: 'center',
+    backgroundScale: 3,
     parallaxBackgroundScrollSpeed: 5,
     parallaxForegroundScrollSpeed: 5
   };
@@ -188,17 +192,20 @@ export default class ParallaxScroll extends Component {
       isBackgroundScalable,
       renderParallaxBackground,
       fadeOutParallaxBackground,
-      parallaxBackgroundScrollSpeed
+      parallaxBackgroundScrollSpeed,
+      backgroundScale,
+      backgroundScaleOrigin,
     } = this.props;
 
+    const topOrigin = backgroundScaleOrigin === 'top'
     /* eslint-disable indent */
     const translateY = !height
       ? 0
       : this.scrollY.interpolate({
-          inputRange: [0, height],
-          outputRange: [0, -(height / parallaxBackgroundScrollSpeed)],
+          inputRange: [...(topOrigin ? [-height, 0] : [0]), height],
+          outputRange: [...(topOrigin ? [-(height / backgroundScale) + height, 0] : [0]), -(height / parallaxBackgroundScrollSpeed)],
           extrapolateRight: 'extend',
-          extrapolateLeft: 'clamp'
+          extrapolateLeft: 'extend'
         });
 
     const scale =
@@ -206,7 +213,7 @@ export default class ParallaxScroll extends Component {
         ? 1
         : this.scrollY.interpolate({
             inputRange: [-height, 0],
-            outputRange: [3, 1],
+            outputRange: [backgroundScale, 1],
             extrapolateLeft: 'extend',
             extrapolateRight: 'clamp'
           });
