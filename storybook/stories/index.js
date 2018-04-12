@@ -3,7 +3,7 @@ import React from 'react';
 import Lightbox from 'react-native-lightbox';
 import { Image, FlatList, ListView, SectionList, Dimensions, TouchableOpacity } from 'react-native';
 import { storiesOf, action } from '@storybook/react-native';
-import { withKnobs, text, boolean, number } from '@storybook/addon-knobs';
+import { withKnobs, text, boolean, number, select } from '@storybook/addon-knobs';
 
 import ParallaxScroll from '../../src';
 
@@ -134,6 +134,35 @@ storiesOf('ParallaxScroll', module)
       parallaxHeight={number('Parallax height', 250)}
       useNativeDriver={boolean('Use native driver', true)}
       isBackgroundScalable={boolean('Is background scalable', true)}
+      headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 0)')}
+      renderParallaxBackground={getBackground}
+      onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
+      renderParallaxForeground={getForeground}
+      fadeOutParallaxBackground={boolean('Fade out background', false)}
+      fadeOutParallaxForeground={boolean('Fade out foreground', true)}
+      headerFixedBackgroundColor={text('Header fixed bacground color', 'rgba(51, 51, 51, 1)')}
+      parallaxBackgroundScrollSpeed={number('Background scroll speed', 5)}
+      parallaxForegroundScrollSpeed={number('Foreground scroll speed', 2.5)}
+    >
+      <Welcome repeat={number('Repeat text times', 5)} />
+    </ParallaxScroll>
+  ))
+  .add('with background scale', () => (
+    <ParallaxScroll
+      style={style}
+      renderHeader={() => <Header onPress={action('onPress Header')} />}
+      headerHeight={number('Header height', 50)}
+      isHeaderFixed={boolean('Is header fixed', true)}
+      onHeaderFixed={action('onHeaderFixed')}
+      parallaxHeight={number('Parallax height', 250)}
+      useNativeDriver={boolean('Use native driver', true)}
+      backgroundScale={number('Background scale', 2)}
+      isBackgroundScalable={boolean('Is background scalable', true)}
+      backgroundScaleOrigin={select(
+        'Background scale origin',
+        { top: 'top', center: 'center' },
+        'top'
+      )}
       headerBackgroundColor={text('Header bacground color', 'rgba(51, 51, 51, 0)')}
       renderParallaxBackground={getBackground}
       onChangeHeaderVisibility={action('onChangeHeaderVisibility')}
