@@ -29,8 +29,10 @@ export default class ParallaxScroll extends Component {
     onHeaderFixed: PropTypes.func,
     parallaxHeight: PropTypes.number,
     useNativeDriver: PropTypes.bool,
+    backgroundScale: PropTypes.number,
     scrollableComponent: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
     isBackgroundScalable: PropTypes.bool,
+    backgroundScaleOrigin: PropTypes.oneOf(['top', 'center']),
     headerFixedTransformY: PropTypes.number,
     headerBackgroundColor: PropTypes.string,
     contentContainerStyle: PropTypes.oneOfType([
@@ -44,8 +46,6 @@ export default class ParallaxScroll extends Component {
     fadeOutParallaxForeground: PropTypes.bool,
     fadeOutParallaxBackground: PropTypes.bool,
     headerFixedBackgroundColor: PropTypes.string,
-    backgroundScaleOrigin: PropTypes.oneOf(['top', 'center']),
-    backgroundScale: PropTypes.number,
     parallaxBackgroundScrollSpeed: PropTypes.number,
     parallaxForegroundScrollSpeed: PropTypes.number
   };
@@ -68,9 +68,11 @@ export default class ParallaxScroll extends Component {
     isHeaderFixed: false,
     onHeaderFixed: () => {},
     parallaxHeight: window.width * RATIO,
+    backgroundScale: 3,
     useNativeDriver: false,
     scrollableComponent: Animated.ScrollView,
     isBackgroundScalable: true,
+    backgroundScaleOrigin: 'center',
     headerFixedTransformY: 0,
     headerBackgroundColor: 'rgba(0, 0, 0, 0)',
     contentContainerStyle: {},
@@ -80,8 +82,6 @@ export default class ParallaxScroll extends Component {
     fadeOutParallaxForeground: false,
     fadeOutParallaxBackground: false,
     headerFixedBackgroundColor: 'rgba(0, 0, 0, 1)',
-    backgroundScaleOrigin: 'center',
-    backgroundScale: 3,
     parallaxBackgroundScrollSpeed: 5,
     parallaxForegroundScrollSpeed: 5
   };
@@ -194,39 +194,41 @@ export default class ParallaxScroll extends Component {
       fadeOutParallaxBackground,
       parallaxBackgroundScrollSpeed,
       backgroundScale,
-      backgroundScaleOrigin,
+      backgroundScaleOrigin
     } = this.props;
 
-    const topOrigin = backgroundScaleOrigin === 'top'
-    /* eslint-disable indent */
+    const topOrigin = backgroundScaleOrigin === 'top';
+
     const translateY = !height
       ? 0
       : this.scrollY.interpolate({
-          inputRange: [...(topOrigin ? [-height, 0] : [0]), height],
-          outputRange: [...(topOrigin ? [-(height / backgroundScale) + height, 0] : [0]), -(height / parallaxBackgroundScrollSpeed)],
-          extrapolateRight: 'extend',
-          extrapolateLeft: 'extend'
-        });
+        inputRange: [...(topOrigin ? [-height, 0] : [0]), height],
+        outputRange: [
+          ...(topOrigin ? [-(height / backgroundScale) + height, 0] : [0]),
+          -(height / parallaxBackgroundScrollSpeed)
+        ],
+        extrapolateLeft: 'extend',
+        extrapolateRight: 'extend'
+      });
 
     const scale =
       !isBackgroundScalable || !height
         ? 1
         : this.scrollY.interpolate({
-            inputRange: [-height, 0],
-            outputRange: [backgroundScale, 1],
-            extrapolateLeft: 'extend',
-            extrapolateRight: 'clamp'
-          });
+          inputRange: [-height, 0],
+          outputRange: [backgroundScale, 1],
+          extrapolateLeft: 'extend',
+          extrapolateRight: 'clamp'
+        });
 
     const opacity =
       !fadeOutParallaxBackground || !height
         ? 1
         : this.scrollY.interpolate({
-            inputRange: [0, height],
-            outputRange: [1, 0],
-            extrapolate: 'clamp'
-          });
-    /* eslint-enable indent */
+          inputRange: [0, height],
+          outputRange: [1, 0],
+          extrapolate: 'clamp'
+        });
 
     return (
       <Animated.View
