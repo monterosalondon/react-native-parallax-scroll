@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+### 1.7.0 - 2018-04-12
+
+#### Added
+
+* `backgroundScale` and `backgroundScaleOrigin` props for support scaling from the top and make scale factor configurable (#22)
+
 ### 1.6.0 - 2018-04-05
 
 #### Fixed
