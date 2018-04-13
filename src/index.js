@@ -40,6 +40,7 @@ export default class ParallaxScroll extends Component {
       PropTypes.number,
       PropTypes.object
     ]),
+    renderBackgroundPlaceholder: PropTypes.func,
     onChangeHeaderVisibility: PropTypes.func,
     renderParallaxBackground: PropTypes.func,
     renderParallaxForeground: PropTypes.func,
@@ -77,6 +78,7 @@ export default class ParallaxScroll extends Component {
     headerBackgroundColor: 'rgba(0, 0, 0, 0)',
     contentContainerStyle: {},
     onChangeHeaderVisibility: () => {},
+    renderBackgroundPlaceholder: null,
     renderParallaxBackground: null,
     renderParallaxForeground: null,
     fadeOutParallaxForeground: false,
@@ -126,7 +128,7 @@ export default class ParallaxScroll extends Component {
       return [{ data: [{ key: KEY }], key: KEY }, ...sections];
     }
 
-    return [{ data: [{ key: KEY }], key: KEY, renderItem: this._renderEmptyView }, ...sections];
+    return [{ data: [{ key: KEY }], key: KEY, renderItem: this._renderBackgroundPlaceholder }, ...sections];
   }
 
   _onScroll = e => {
@@ -163,7 +165,7 @@ export default class ParallaxScroll extends Component {
 
   _renderRow = (rowData, sectionID, rowID, highlightRow) => {
     if (sectionID === KEY) {
-      return this._renderEmptyView();
+      return this._renderBackgroundPlaceholder();
     }
 
     return this.props.renderRow(rowData, sectionID, rowID, highlightRow);
@@ -171,13 +173,27 @@ export default class ParallaxScroll extends Component {
 
   _renderItem = e => {
     if (e.item.key === KEY) {
-      return this._renderEmptyView();
+      return this._renderBackgroundPlaceholder();
     }
 
     return this.props.renderItem(e);
   };
 
-  _renderEmptyView = () => <View style={{ height: this.props.parallaxHeight }} />;
+  _renderBackgroundPlaceholder = () => {
+    const {
+      renderBackgroundPlaceholder,
+      parallaxHeight
+    } = this.props;
+
+    if (renderBackgroundPlaceholder) {
+      return renderBackgroundPlaceholder({
+        animatedValue: this.scrollY,
+        height: parallaxHeight
+      });
+    } else {
+      return <View style={{ height: parallaxHeight }} />;
+    }
+  }
 
   _ref = ref => {
     if (typeof this.props.innerRef === 'function' && ref && ref._component) {
@@ -430,7 +446,7 @@ export default class ParallaxScroll extends Component {
         >
           {isRenderChildComponents && renderParallaxForeground && this._renderParallaxForeground()}
 
-          {isRenderChildComponents && this._renderEmptyView()}
+          {isRenderChildComponents && this._renderBackgroundPlaceholder()}
 
           {isRenderChildComponents && children}
         </ScrollableComponent>
