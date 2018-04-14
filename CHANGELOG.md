@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+### 1.8.0 - 2018-04-14
+
+#### Added
+
+* `renderBackgroundPlaceholder` prop for overriding default behaviour to layer things in between foreground and background (#23)
+
 ### 1.7.0 - 2018-04-12
 
 #### Added
