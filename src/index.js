@@ -40,13 +40,13 @@ export default class ParallaxScroll extends Component {
       PropTypes.number,
       PropTypes.object
     ]),
-    renderBackgroundPlaceholder: PropTypes.func,
     onChangeHeaderVisibility: PropTypes.func,
     renderParallaxBackground: PropTypes.func,
     renderParallaxForeground: PropTypes.func,
     fadeOutParallaxForeground: PropTypes.bool,
     fadeOutParallaxBackground: PropTypes.bool,
     headerFixedBackgroundColor: PropTypes.string,
+    renderBackgroundPlaceholder: PropTypes.func,
     parallaxBackgroundScrollSpeed: PropTypes.number,
     parallaxForegroundScrollSpeed: PropTypes.number
   };
@@ -78,12 +78,12 @@ export default class ParallaxScroll extends Component {
     headerBackgroundColor: 'rgba(0, 0, 0, 0)',
     contentContainerStyle: {},
     onChangeHeaderVisibility: () => {},
-    renderBackgroundPlaceholder: null,
     renderParallaxBackground: null,
     renderParallaxForeground: null,
     fadeOutParallaxForeground: false,
     fadeOutParallaxBackground: false,
     headerFixedBackgroundColor: 'rgba(0, 0, 0, 1)',
+    renderBackgroundPlaceholder: null,
     parallaxBackgroundScrollSpeed: 5,
     parallaxForegroundScrollSpeed: 5
   };
@@ -128,7 +128,10 @@ export default class ParallaxScroll extends Component {
       return [{ data: [{ key: KEY }], key: KEY }, ...sections];
     }
 
-    return [{ data: [{ key: KEY }], key: KEY, renderItem: this._renderBackgroundPlaceholder }, ...sections];
+    return [
+      { data: [{ key: KEY }], key: KEY, renderItem: this._renderBackgroundPlaceholder },
+      ...sections
+    ];
   }
 
   _onScroll = e => {
@@ -180,20 +183,17 @@ export default class ParallaxScroll extends Component {
   };
 
   _renderBackgroundPlaceholder = () => {
-    const {
-      renderBackgroundPlaceholder,
-      parallaxHeight
-    } = this.props;
+    const { parallaxHeight, renderBackgroundPlaceholder } = this.props;
 
     if (renderBackgroundPlaceholder) {
       return renderBackgroundPlaceholder({
         animatedValue: this.scrollY,
         height: parallaxHeight
       });
-    } else {
-      return <View style={{ height: parallaxHeight }} />;
     }
-  }
+
+    return <View style={{ height: parallaxHeight }} />;
+  };
 
   _ref = ref => {
     if (typeof this.props.innerRef === 'function' && ref && ref._component) {
