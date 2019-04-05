@@ -46,6 +46,11 @@ export default class ParallaxScroll extends Component {
     fadeOutParallaxForeground: PropTypes.bool,
     fadeOutParallaxBackground: PropTypes.bool,
     headerFixedBackgroundColor: PropTypes.string,
+    headerWrapperStyle: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.number,
+      PropTypes.object
+    ]),
     renderBackgroundPlaceholder: PropTypes.func,
     parallaxBackgroundScrollSpeed: PropTypes.number,
     parallaxForegroundScrollSpeed: PropTypes.number
@@ -83,6 +88,7 @@ export default class ParallaxScroll extends Component {
     fadeOutParallaxForeground: false,
     fadeOutParallaxBackground: false,
     headerFixedBackgroundColor: 'rgba(0, 0, 0, 1)',
+    headerWrapperStyle: {},
     renderBackgroundPlaceholder: null,
     parallaxBackgroundScrollSpeed: 5,
     parallaxForegroundScrollSpeed: 5
@@ -329,6 +335,7 @@ export default class ParallaxScroll extends Component {
       headerFixedTransformY,
       headerBackgroundColor,
       headerFixedBackgroundColor
+      headerWrapperStyles,
     } = this.props;
 
     const wrapperStyle = {
@@ -381,7 +388,7 @@ export default class ParallaxScroll extends Component {
     }
 
     return (
-      <View style={wrapperStyle} pointerEvents="box-none">
+      <View style={[wrapperStyle, headerWrapperStyle || {}]} pointerEvents="box-none">
         <Animated.View style={style} pointerEvents="box-none">
           {renderHeader({ width, height, animatedValue: this.scrollY })}
         </Animated.View>
