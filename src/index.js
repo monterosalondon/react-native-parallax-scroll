@@ -334,8 +334,8 @@ export default class ParallaxScroll extends Component {
       useNativeDriver,
       headerFixedTransformY,
       headerBackgroundColor,
-      headerFixedBackgroundColor
-      headerWrapperStyles,
+      headerFixedBackgroundColor,
+      headerWrapperStyles
     } = this.props;
 
     const wrapperStyle = {
