@@ -13,8 +13,8 @@ export default class ParallaxScroll extends Component {
   static propTypes = {
     data: PropTypes.oneOfType([PropTypes.array]),
     style: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
-    width: PropTypes.number,
-    height: PropTypes.number,
+    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     innerRef: PropTypes.func,
     sections: PropTypes.oneOfType([PropTypes.array]),
     onScroll: PropTypes.func,
