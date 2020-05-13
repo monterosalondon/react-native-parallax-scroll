@@ -23,9 +23,6 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@storybook/addon-knobs": "^3.3.13",
-    "@storybook/addons": "^3.3.13",
-    "@storybook/react-native": "^3.3.13",
     "babel-eslint": "^8.2.1",
     "babel-preset-react-native": "4.0.0",
     "eslint": "^4.17.0",
