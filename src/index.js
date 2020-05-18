@@ -296,7 +296,7 @@ export default class ParallaxScroll extends Component {
       position: 'absolute',
       top: 0,
       width,
-      height,
+      height: this.isHeaderFixed ? this.props.headerHeight : height,
       zIndex: 1
     };
 
@@ -306,13 +306,17 @@ export default class ParallaxScroll extends Component {
           style={{
             position: 'absolute',
             width,
-            height,
+            height: this.isHeaderFixed ? this.props.headerHeight : height,
             opacity,
             transform: [{ translateY }]
           }}
           pointerEvents="box-none"
         >
-          {renderParallaxForeground({ width, height, animatedValue: this.scrollY })}
+          {renderParallaxForeground({
+            width,
+            height: this.isHeaderFixed ? this.props.headerHeight : height,
+            animatedValue: this.scrollY
+          })}
         </Animated.View>
       </View>
     );
