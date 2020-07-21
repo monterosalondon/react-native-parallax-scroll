@@ -196,8 +196,8 @@ export default class ParallaxScroll extends Component {
   };
 
   _ref = ref => {
-    if (typeof this.props.innerRef === 'function' && ref && ref._component) {
-      this.props.innerRef(ref._component);
+    if (typeof this.props.innerRef === 'function' && ref) {
+      this.props.innerRef(ref._component || ref);
     }
   };
 
